@@ -86,13 +86,13 @@ class Meteor1(pygame.sprite.Sprite):
 
 		self.rect.x = random.randrange(0, 1200)
 		# self.rect.x = 600
-		self.rect.y = random.randrange(-1500, 0)
+		self.rect.y = random.randrange(0, 10) #-1500
 	def update(self):
 		self.rect.y = self.rect.y + meteor1_speed
 		self.rect.x = self.rect.x + random.randrange(-1,2)
 		if self.rect.y >= 960:
 			self.rect.x = random.randrange(0, 1280)
-			self.rect.y = random.randrange(-1500, 0)
+			self.rect.y = random.randrange(0, 10)
 
 class Meteor2(pygame.sprite.Sprite):
 	# Constructor
@@ -104,13 +104,13 @@ class Meteor2(pygame.sprite.Sprite):
 
 		self.rect.x = random.randrange(0, 1200)
 		# self.rect.x = 600
-		self.rect.y = random.randrange(-1500,0)
+		self.rect.y = random.randrange(0,10) #-1500
 	def update(self):
 		self.rect.y = self.rect.y + meteor2_speed
 		self.rect.x = self.rect.x + random.randrange(-1,2)
 		if self.rect.y >= 960:
 			self.rect.x = random.randrange(0, 1280)
-			self.rect.y = random.randrange(-1500, 0)
+			self.rect.y = random.randrange(0, 10)
 
 class Meteor3(pygame.sprite.Sprite):
 	# Constructor
@@ -122,13 +122,13 @@ class Meteor3(pygame.sprite.Sprite):
 
 		self.rect.x = random.randrange(0, 1200)
 		# self.rect.x = 600
-		self.rect.y = random.randrange(-1500, 0)
+		self.rect.y = random.randrange(0, 10)
 	def update(self):
 		self.rect.y = self.rect.y + meteor3_speed
 		self.rect.x = self.rect.x + random.randrange(-1,2)
 		if self.rect.y >= 960:
 			self.rect.x = random.randrange(0, 1280)
-			self.rect.y = random.randrange(-1500, 0)
+			self.rect.y = random.randrange(0, 10)
 
 class Meteor4(pygame.sprite.Sprite):
 	# Constructor
@@ -140,42 +140,42 @@ class Meteor4(pygame.sprite.Sprite):
 
 		self.rect.x = random.randrange(0, 1200)
 		# self.rect.x = 600
-		self.rect.y = random.randrange(-1500,0)
+		self.rect.y = random.randrange(0, 10)
 	def update(self):
 		self.rect.y = self.rect.y + meteor4_speed
 		self.rect.x = self.rect.x + random.randrange(-1,2)
 		if self.rect.y >= 960:
 			self.rect.x = random.randrange(0, 1280)
-			self.rect.y = random.randrange(-1500, 0)
+			self.rect.y = random.randrange(0, 10)
 		
 # All Meteor Sprites Group
 all_meteors_group = pygame.sprite.Group()
+no_Meteor1 = 5
+no_Meteor2 = 3
+no_Meteor3 = 3
+no_Meteor4 = 3
 
 
 meteor1_group = pygame.sprite.Group()
-no_of_meteors = 5
-for x in range (no_of_meteors):
+for x in range (no_Meteor1):
 	meteor1_sprite = Meteor1(25, 49)
 	meteor1_group.add(meteor1_sprite)
 	all_meteors_group.add(meteor1_sprite)
 
 meteor2_group = pygame.sprite.Group()
-no_of_meteors = 3
-for x in range (no_of_meteors):
+for x in range (no_Meteor2):
 	meteor2_sprite = Meteor2(40,66)
 	meteor2_group.add(meteor2_sprite)
 	all_meteors_group.add(meteor2_sprite)
 
 meteor3_group = pygame.sprite.Group()
-no_of_meteors = 3
-for x in range (no_of_meteors):
+for x in range (no_Meteor3):
 	meteor3_sprite = Meteor3(20,52)
 	meteor3_group.add(meteor3_sprite)
 	all_meteors_group.add(meteor3_sprite)
 
 meteor4_group = pygame.sprite.Group()
-no_of_meteors = 3
-for x in range (no_of_meteors):
+for x in range (no_Meteor4):
 	meteor4_sprite = Meteor4(45,78)
 	meteor4_group.add(meteor4_sprite)
 	all_meteors_group.add(meteor4_sprite)
@@ -198,20 +198,20 @@ while not quitgame:
 	timerText = timerFont.render(str(timer), True, (255,255,255))
 	screen.blit(timerText, (80,60))
 	
-	#all_meteors_group.update()
+	ticks = int(pygame.time.get_ticks()/1000)
 	meteor1_group.update()
-	meteor2_group.update()
-	meteor3_group.update()
-	meteor4_group.update()
-
-	# Game Logic
-	
-	#all_meteors_group.draw(screen)
 	meteor1_group.draw(screen)
-	meteor2_group.draw(screen)
-	meteor3_group.draw(screen)
-	meteor4_group.draw(screen)
 	
+	if ticks >= 5:
+		meteor2_group.update()
+		meteor2_group.draw(screen)
+	if ticks >= 10:
+		meteor3_group.update()
+		meteor3_group.draw(screen)
+	if ticks >= 15:
+		meteor4_group.update()
+		meteor4_group.draw(screen)
+
 
 	# Game Assset Placement
 
