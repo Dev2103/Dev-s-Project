@@ -9,6 +9,7 @@ GOLD = (255,215,0)		# FOR GUN 2 BULLET
 BLUE = (18,198,236)		# FOR GUN 1 BARREL
 GOLDISH = (234,154,0)	# FOR GUN 2 B
 
+
 pygame.init()
 
 
@@ -22,10 +23,10 @@ timerFont = pygame.font.Font(None, 36)
 
 # Global Variables
 quitgame = False # as quit is a keyword and to signal when when the game is closed
-meteor1_speed = 1.9
-meteor2_speed = 1
-meteor3_speed = 2
-meteor4_speed = 1.3
+meteor1_speed = 2.4
+meteor2_speed = 1.5
+meteor3_speed = 3.0
+meteor4_speed = 1.7
 
 
 
@@ -86,13 +87,13 @@ class Meteor1(pygame.sprite.Sprite):
 
 		self.rect.x = random.randrange(0, 1200)
 		# self.rect.x = 600
-		self.rect.y = random.randrange(0, 10) #-1500
+		self.rect.y = random.randrange(-1000, 0) #-1500
 	def update(self):
 		self.rect.y = self.rect.y + meteor1_speed
 		self.rect.x = self.rect.x + random.randrange(-1,2)
 		if self.rect.y >= 960:
 			self.rect.x = random.randrange(0, 1280)
-			self.rect.y = random.randrange(0, 10)
+			self.rect.y = random.randrange(-2000, 0)
 
 class Meteor2(pygame.sprite.Sprite):
 	# Constructor
@@ -104,13 +105,13 @@ class Meteor2(pygame.sprite.Sprite):
 
 		self.rect.x = random.randrange(0, 1200)
 		# self.rect.x = 600
-		self.rect.y = random.randrange(0,10) #-1500
+		self.rect.y = random.randrange(-3000,0) #-1500
 	def update(self):
 		self.rect.y = self.rect.y + meteor2_speed
 		self.rect.x = self.rect.x + random.randrange(-1,2)
 		if self.rect.y >= 960:
 			self.rect.x = random.randrange(0, 1280)
-			self.rect.y = random.randrange(0, 10)
+			self.rect.y = random.randrange(-3000,0)
 
 class Meteor3(pygame.sprite.Sprite):
 	# Constructor
@@ -122,13 +123,13 @@ class Meteor3(pygame.sprite.Sprite):
 
 		self.rect.x = random.randrange(0, 1200)
 		# self.rect.x = 600
-		self.rect.y = random.randrange(0, 10)
+		self.rect.y = random.randrange(-1500, 0)
 	def update(self):
 		self.rect.y = self.rect.y + meteor3_speed
 		self.rect.x = self.rect.x + random.randrange(-1,2)
 		if self.rect.y >= 960:
 			self.rect.x = random.randrange(0, 1280)
-			self.rect.y = random.randrange(0, 10)
+			self.rect.y = random.randrange(-3000,0)
 
 class Meteor4(pygame.sprite.Sprite):
 	# Constructor
@@ -140,18 +141,19 @@ class Meteor4(pygame.sprite.Sprite):
 
 		self.rect.x = random.randrange(0, 1200)
 		# self.rect.x = 600
-		self.rect.y = random.randrange(0, 10)
+		self.rect.y = random.randrange(-1500,0)
 	def update(self):
 		self.rect.y = self.rect.y + meteor4_speed
 		self.rect.x = self.rect.x + random.randrange(-1,2)
 		if self.rect.y >= 960:
 			self.rect.x = random.randrange(0, 1280)
-			self.rect.y = random.randrange(0, 10)
+			self.rect.y = random.randrange(-3000,0)
 		
 # All Meteor Sprites Group
+
 all_meteors_group = pygame.sprite.Group()
-no_Meteor1 = 5
-no_Meteor2 = 3
+no_Meteor1 = 8
+no_Meteor2 = 4
 no_Meteor3 = 3
 no_Meteor4 = 3
 
@@ -196,19 +198,21 @@ while not quitgame:
 	minutes = int(pygame.time.get_ticks()/60000)
 	timer = "{:02d}:{:02d}".format(minutes, seconds)
 	timerText = timerFont.render(str(timer), True, (255,255,255))
-	screen.blit(timerText, (80,60))
+	screen.blit(timerText, (10,10))
 	
+	
+
+	# Meteor timing
 	ticks = int(pygame.time.get_ticks()/1000)
 	meteor1_group.update()
 	meteor1_group.draw(screen)
-	
-	if ticks >= 5:
+	if ticks >= 45:
 		meteor2_group.update()
 		meteor2_group.draw(screen)
-	if ticks >= 10:
+	if ticks >= 105:
 		meteor3_group.update()
 		meteor3_group.draw(screen)
-	if ticks >= 15:
+	if ticks >= 180:
 		meteor4_group.update()
 		meteor4_group.draw(screen)
 
@@ -306,19 +310,10 @@ while not quitgame:
 	screen.blit(gun1, [1180,730])
 	screen.blit(gun2, [1180,730]) 
 
-	# def is_collided_with(self, sprite):
- #    	return self.rect.colliderect(sprite.rect)
-	
-	# 		if meteor1_group.is_collided_with(tall2):
-				
- #    		meteor1_group.kill()
- #    		tall2.kill()
+	# Collisions
 
-
- 	# hit = pygame.sprite.spritecollide(tall2,meteor1_group,True)
- 	# if hit:
- 	# 	screen.fill(255,255,255)
-	
+	# if meteor1_group.rect.y = 960:
+	# 	print("GAME OVER")
 
 
 	
