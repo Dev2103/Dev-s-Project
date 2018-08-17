@@ -17,6 +17,9 @@ USERANGLE = 0
 ANGLE_R_LIMIT = 60
 ANGLE_L_LIMIT = -60
 SCORE = 0
+FIRED = False
+DELAY = 0
+READY = False
 
 pygame.init()
 
@@ -84,8 +87,8 @@ gun2 = pygame.transform.scale(pygame.image.load("img/gun2.png"), [80,42])
 
 barrel = pygame.image.load("img/barrel.png")
 
-pygame.mixer.music.load("music/musicbg.mp3")
-pygame.mixer.music.play(-1, 0.0)
+# pygame.mixer.music.load("music/musicbg.mp3")
+# pygame.mixer.music.play(-1, 0.0)
 
 # Meteor Class Descriptions
 class Meteor1(pygame.sprite.Sprite):
@@ -382,36 +385,38 @@ barrel_group.add(user_barrel_sprite)
 
 # Computer Barrels
 class Barrel(pygame.sprite.Sprite):
-	def __init__(self, x, y):
+	def __init__(self, x, y, left_limit, right_limit):
 		super().__init__()
 		self.imageMaster = barrel
 		self.image = self.imageMaster
 		self.rect = self.image.get_rect()
 		self.rect.x = x
 		self.rect.y = y
+		self.left_limit = 0 - right_limit
+		self.right_limit = 0 - left_limit
 		self.angle = 0
-		self.dir = 2
+		self.dir = 5
 		centerX = x + 2
 		centerY = y + 13
 		self.rect.center = (centerX, centerY)	
 	def update(self):
-		global ANGLE, ANGLE_R_LIMIT, ANGLE_L_LIMIT
-		if self.angle >= ANGLE_R_LIMIT:
-			self.dir = -2
-		elif self.angle <= ANGLE_L_LIMIT:
-			self.dir = 2
+		global ANGLE
 		self.angle = self.angle + self.dir
-		ANGLE = 0 - self.angle
+		if self.angle >= self.right_limit:
+			self.dir = -5
+		elif self.angle <= self.left_limit:
+			self.dir = 5
+		ANGLE = self.angle
 		oldCenter = self.rect.center
 		self.image = pygame.transform.rotate(self.imageMaster, self.angle)
 		self.rect = self.image.get_rect()
 		self.rect.center = oldCenter
 
-barrel_sprite1 = Barrel(65, 720) 
-barrel_sprite2 = Barrel(353, 743)
-barrel_sprite4 = Barrel(818, 743)
-barrel_sprite5 = Barrel(998, 720)
-barrel_sprite6 = Barrel(1218,720)
+barrel_sprite1 = Barrel(65, 720, -10, 60)
+barrel_sprite2 = Barrel(353, 743, -30, 60)
+barrel_sprite4 = Barrel(818, 743, -60, 60)
+barrel_sprite5 = Barrel(998, 720, -60, 30)
+barrel_sprite6 = Barrel(1218,720, -60, 10)
 barrel_group.add(barrel_sprite1)
 barrel_group.add(barrel_sprite2)
 barrel_group.add(barrel_sprite4)
@@ -461,7 +466,7 @@ class Bullet1(pygame.sprite.Sprite):
 			self.kill()
 	def direction(self, angle):
 		self.angle = angle
-		
+
 bullet1_group = pygame.sprite.Group()
 
 
@@ -509,7 +514,6 @@ class Bullet4(pygame.sprite.Sprite):
 	
 bullet4_group = pygame.sprite.Group()
 
-
 class Bullet5(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
@@ -530,7 +534,6 @@ class Bullet5(pygame.sprite.Sprite):
 		self.angle = angle
 		
 bullet5_group = pygame.sprite.Group()
-
 
 class Bullet6(pygame.sprite.Sprite):
 	def __init__(self):
@@ -555,9 +558,10 @@ class Bullet6(pygame.sprite.Sprite):
 bullet6_group = pygame.sprite.Group()
 
 all_bullets = pygame.sprite.Group()
+computer_bullets = pygame.sprite.Group()
 
 def game_loop():
-	global QUITGAME, SCORE
+	global QUITGAME, SCORE, FIRED, DELAY, READY
 	while not QUITGAME:
 		# Background Refresh
 		screen.blit(background_img, [0,0])
@@ -591,23 +595,30 @@ def game_loop():
 
 		
 		allBuildings.draw(screen)
+		
+
+
+		# User Bullets
 		bullet_main_group.draw(screen)
 		bullet_main_group.update()
 
-		bullet1_group.draw(screen)
-		bullet1_group.update()
+		# Computer Bullets
+		if READY and not FIRED:
+			fire_bullets()
+			FIRED = True
+			READY = False
+		elif not READY:
+			FIRED = False
 
-		bullet2_group.draw(screen)
-		bullet2_group.update()
+		DELAY = DELAY + 1
+		if DELAY >= 10:
+			READY = True
+			DELAY = 0
+		
+		computer_bullets.draw(screen)
+		computer_bullets.update()
 
-		bullet4_group.draw(screen)
-		bullet4_group.update()
-
-		bullet5_group.draw(screen)
-		bullet5_group.update()
-
-		bullet6_group.draw(screen)
-		bullet6_group.update()
+		# Guns and Barrels
 		barrel_group.clear(screen, background)
 		barrel_group.update()
 		barrel_group.draw(screen)
@@ -634,14 +645,6 @@ def game_loop():
 
 		screen.blit(upgrade_faded, [795,805])
 		screen.blit(upgrade, [795,805])
-		
-		#Guns
-	
-		# screen.blit(gun1, [580,726])  # USER CONTROLLED
-		# screen.blit(gun2, [580,726]) 
-
-
-		
 
 		pygame.sprite.groupcollide(meteor1_group, allBuildings, False, True)
 		pygame.sprite.groupcollide(meteor2_group, allBuildings, False, True)
@@ -666,15 +669,11 @@ def game_loop():
 			meteor2_group.add(meteor2_sprite)
 			all_meteors_group.add(meteor2_sprite)
 
-
-
 		if all_bullets_meteor3_collision:
 			SCORE = SCORE + 250
 			meteor3_sprite = Meteor3()
 			meteor3_group.add(meteor3_sprite)
 			all_meteors_group.add(meteor3_sprite)
-
-
 
 		if all_bullets_meteor4_collision:
 			SCORE = SCORE + 400
@@ -682,41 +681,14 @@ def game_loop():
 			meteor4_group.add(meteor4_sprite)
 			all_meteors_group.add(meteor4_sprite)
 
-
-
-
 		for event in pygame.event.get():
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_SPACE:
-					newBullet = Bullet_main()
-					newBullet.direction(USERANGLE)
-					bullet_main_group.add(newBullet)
-					all_bullets.add(newBullet)
-					
-					newBullet1 = Bullet1()
-					newBullet1.direction(ANGLE)
-					bullet1_group.add(newBullet1)
-					all_bullets.add(newBullet1)
-					
-					newBullet2 = Bullet2()
-					newBullet2.direction(ANGLE)
-					bullet2_group.add(newBullet2)
-					all_bullets.add(newBullet2)
-
-					newBullet4 = Bullet4()
-					newBullet4.direction(ANGLE)
-					bullet4_group.add(newBullet4)
-					all_bullets.add(newBullet4)
-					
-					newBullet5 = Bullet5()
-					newBullet5.direction(ANGLE)
-					bullet5_group.add(newBullet5)
-					all_bullets.add(newBullet5)
-					
-					newBullet6 = Bullet6()
-					newBullet6.direction(ANGLE)
-					bullet6_group.add(newBullet6)
-					all_bullets.add(newBullet6)
+					if len(bullet_main_group) <= 5:
+						newBullet = Bullet_main()
+						newBullet.direction(USERANGLE)
+						bullet_main_group.add(newBullet)
+						all_bullets.add(newBullet)
 
 				if event.key == pygame.K_LEFT:
 					user_barrel_sprite.turn_left()
@@ -748,7 +720,36 @@ def intro_loop():
 					intro = False
 		screen.blit(intro_img, [0,0])
 		pygame.display.flip()
+def fire_bullets():
+	newBullet1 = Bullet1()
+	newBullet1.direction(ANGLE)
+	bullet1_group.add(newBullet1)
+	all_bullets.add(newBullet1)
+	computer_bullets.add(newBullet1)
+	
+	newBullet2 = Bullet2()
+	newBullet2.direction(ANGLE)
+	bullet2_group.add(newBullet2)
+	all_bullets.add(newBullet2)
+	computer_bullets.add(newBullet2)
 
-intro_loop()
+	newBullet4 = Bullet4()
+	newBullet4.direction(ANGLE)
+	bullet4_group.add(newBullet4)
+	all_bullets.add(newBullet4)
+	computer_bullets.add(newBullet4)
+
+	newBullet5 = Bullet5()
+	newBullet5.direction(ANGLE)
+	bullet5_group.add(newBullet5)
+	all_bullets.add(newBullet5)
+	computer_bullets.add(newBullet5)
+
+	newBullet6 = Bullet6()
+	newBullet6.direction(ANGLE)
+	bullet6_group.add(newBullet6)
+	all_bullets.add(newBullet6)
+	computer_bullets.add(newBullet6)
+# intro_loop()
 game_loop()
-game_over()
+# game_over()
