@@ -14,8 +14,8 @@ BLUE = (18,198,236)		# FOR GUN 1 BARREL
 GOLDISH = (234,154,0)	# FOR GUN 2 BARREL
 ANGLE = 0
 USERANGLE = 0
-ANGLE_R_LIMIT = 75
-ANGLE_L_LIMIT = -75
+ANGLE_R_LIMIT = 60
+ANGLE_L_LIMIT = -60
 SCORE = 0
 
 pygame.init()
@@ -30,6 +30,7 @@ game_over_img = pygame.image.load("img/game_over.png")
 background_img = pygame.image.load("img/bg.png")
 clock = pygame.time.Clock()
 timerFont = pygame.font.Font(None, 36)
+scoreFont = pygame.font.SysFont(None, 40)
 
 # Global Variables
 QUITGAME = False 
@@ -83,6 +84,9 @@ gun2 = pygame.transform.scale(pygame.image.load("img/gun2.png"), [80,42])
 
 barrel = pygame.image.load("img/barrel.png")
 
+pygame.mixer.music.load("music/musicbg.mp3")
+pygame.mixer.music.play(-1, 0.0)
+
 # Meteor Class Descriptions
 class Meteor1(pygame.sprite.Sprite):
 	# Constructor
@@ -106,9 +110,9 @@ class Meteor1(pygame.sprite.Sprite):
 
 class Meteor2(pygame.sprite.Sprite):
 	# Constructor
-	def __init__(self, width, height):
+	def __init__(self):
 		super().__init__()
-		self.image = pygame.Surface([width, height])
+		self.image = pygame.Surface([40,66])
 		self.image = meteor2
 		self.rect = self.image.get_rect()
 
@@ -124,9 +128,9 @@ class Meteor2(pygame.sprite.Sprite):
 
 class Meteor3(pygame.sprite.Sprite):
 	# Constructor
-	def __init__(self, width, height):
+	def __init__(self):
 		super().__init__()
-		self.image = pygame.Surface([width, height])
+		self.image = pygame.Surface([20,52])
 		self.image = meteor3
 		self.rect = self.image.get_rect()
 
@@ -142,9 +146,9 @@ class Meteor3(pygame.sprite.Sprite):
 
 class Meteor4(pygame.sprite.Sprite):
 	# Constructor
-	def __init__(self, width, height):
+	def __init__(self):
 		super().__init__()
-		self.image = pygame.Surface([width, height])
+		self.image = pygame.Surface([45,78])
 		self.image = meteor4
 		self.rect = self.image.get_rect()
 
@@ -161,9 +165,9 @@ class Meteor4(pygame.sprite.Sprite):
 # Meteor Sprite Creation
 all_meteors_group = pygame.sprite.Group()
 no_Meteor1 = 8
-no_Meteor2 = 4
-no_Meteor3 = 3
-no_Meteor4 = 3
+no_Meteor2 = 5
+no_Meteor3 = 5
+no_Meteor4 = 5
 
 meteor1_group = pygame.sprite.Group()
 for x in range (no_Meteor1):
@@ -173,19 +177,19 @@ for x in range (no_Meteor1):
 
 meteor2_group = pygame.sprite.Group()
 for x in range (no_Meteor2):
-	meteor2_sprite = Meteor2(40,66)
+	meteor2_sprite = Meteor2()
 	meteor2_group.add(meteor2_sprite)
 	all_meteors_group.add(meteor2_sprite)
 
 meteor3_group = pygame.sprite.Group()
 for x in range (no_Meteor3):
-	meteor3_sprite = Meteor3(20,52)
+	meteor3_sprite = Meteor3()
 	meteor3_group.add(meteor3_sprite)
 	all_meteors_group.add(meteor3_sprite)
 
 meteor4_group = pygame.sprite.Group()
 for x in range (no_Meteor4):
-	meteor4_sprite = Meteor4(45,78)
+	meteor4_sprite = Meteor4()
 	meteor4_group.add(meteor4_sprite)
 	all_meteors_group.add(meteor4_sprite)
 
@@ -445,7 +449,7 @@ class Bullet1(pygame.sprite.Sprite):
 		self.image.fill(SILVER)
 		self.rect = self.image.get_rect()
 		self.rect.x = 65
-		self.rect.y = 710
+		self.rect.y = 733
 		self.originX = self.rect.x
 		self.originY = self.rect.y
 		self.angle = 0
@@ -468,7 +472,7 @@ class Bullet2(pygame.sprite.Sprite):
 		self.image.fill(SILVER)
 		self.rect = self.image.get_rect()
 		self.rect.x = 353
-		self.rect.y = 710
+		self.rect.y = 750
 		self.originX = self.rect.x
 		self.originY = self.rect.y
 		self.angle = 0
@@ -491,7 +495,7 @@ class Bullet4(pygame.sprite.Sprite):
 		self.image.fill(SILVER)
 		self.rect = self.image.get_rect()
 		self.rect.x = 818
-		self.rect.y = 710
+		self.rect.y = 750
 		self.originX = self.rect.x
 		self.originY = self.rect.y
 		self.angle = 0
@@ -513,7 +517,7 @@ class Bullet5(pygame.sprite.Sprite):
 		self.image.fill(SILVER)
 		self.rect = self.image.get_rect()
 		self.rect.x = 998
-		self.rect.y = 710
+		self.rect.y = 733
 		self.originX = self.rect.x
 		self.originY = self.rect.y
 		self.angle = 0
@@ -535,7 +539,7 @@ class Bullet6(pygame.sprite.Sprite):
 		self.image.fill(SILVER)
 		self.rect = self.image.get_rect()
 		self.rect.x = 1218
-		self.rect.y = 710
+		self.rect.y = 733
 		self.originX = self.rect.x
 		self.originY = self.rect.y
 		self.angle = 0
@@ -566,8 +570,9 @@ def game_loop():
 		timer = "{:02d}:{:02d}".format(minutes, seconds)
 		timerText = timerFont.render("Time: " + str(timer), True, (255,255,255))
 		screen.blit(timerText, (10,10))
-		score = timerFont.render("Score: " + str(SCORE), True, (255,255,255))
-		screen.blit(score, (10, 40))
+		score = "{:05d}".format(SCORE)
+		scoreText = scoreFont.render("Score: " + str(score), True, (255,255,255))
+		screen.blit(scoreText, (10, 40))
 		
 		# Meteor timing
 		ticks = int(pygame.time.get_ticks()/1000)
@@ -586,6 +591,23 @@ def game_loop():
 
 		
 		allBuildings.draw(screen)
+		bullet_main_group.draw(screen)
+		bullet_main_group.update()
+
+		bullet1_group.draw(screen)
+		bullet1_group.update()
+
+		bullet2_group.draw(screen)
+		bullet2_group.update()
+
+		bullet4_group.draw(screen)
+		bullet4_group.update()
+
+		bullet5_group.draw(screen)
+		bullet5_group.update()
+
+		bullet6_group.draw(screen)
+		bullet6_group.update()
 		barrel_group.clear(screen, background)
 		barrel_group.update()
 		barrel_group.draw(screen)
@@ -633,19 +655,35 @@ def game_loop():
 		all_bullets_meteor4_collision = pygame.sprite.groupcollide(all_bullets, meteor4_group, True, True)
 
 		if all_bullets_meteor1_collision:
-			SCORE = SCORE + 1
+			SCORE = SCORE + 100
 			meteor1_sprite = Meteor1()
 			meteor1_group.add(meteor1_sprite)
 			all_meteors_group.add(meteor1_sprite)
 
 		if all_bullets_meteor2_collision:
-			SCORE = SCORE + 5
+			SCORE = SCORE + 200
+			meteor2_sprite = Meteor2()
+			meteor2_group.add(meteor2_sprite)
+			all_meteors_group.add(meteor2_sprite)
+
+
 
 		if all_bullets_meteor3_collision:
-			SCORE = SCORE + 10
+			SCORE = SCORE + 250
+			meteor3_sprite = Meteor3()
+			meteor3_group.add(meteor3_sprite)
+			all_meteors_group.add(meteor3_sprite)
+
+
 
 		if all_bullets_meteor4_collision:
-			SCORE = SCORE + 15
+			SCORE = SCORE + 400
+			meteor4_sprite = Meteor4()
+			meteor4_group.add(meteor4_sprite)
+			all_meteors_group.add(meteor4_sprite)
+
+
+
 
 		for event in pygame.event.get():
 			if event.type == pygame.KEYDOWN:
@@ -680,33 +718,15 @@ def game_loop():
 					bullet6_group.add(newBullet6)
 					all_bullets.add(newBullet6)
 
-				if event.key == pygame.K_a:
+				if event.key == pygame.K_LEFT:
 					user_barrel_sprite.turn_left()
-				if event.key == pygame.K_d:
+				if event.key == pygame.K_RIGHT:
 					user_barrel_sprite.turn_right()
 					
 			elif event.type == pygame.QUIT:
 				QUITGAME = True
-		bullet_main_group.draw(screen)
-		bullet_main_group.update()
-
-		bullet1_group.draw(screen)
-		bullet1_group.update()
-
-		bullet2_group.draw(screen)
-		bullet2_group.update()
-
-		bullet4_group.draw(screen)
-		bullet4_group.update()
-
-		bullet5_group.draw(screen)
-		bullet5_group.update()
-
-		bullet6_group.draw(screen)
-		bullet6_group.update()
 
 		pygame.display.flip()
-
 def game_over():
 	game_over = True
 	while game_over:
@@ -714,9 +734,9 @@ def game_over():
 			if event.type == pygame.QUIT:
 				game_over = False
 		screen.blit(game_over_img, [0,0])
+		score = scoreFont.render(str(SCORE), True, (255,255,255))
+		screen.blit(score, (670, 565))
 		pygame.display.flip()
-
-		
 def intro_loop():
 	intro =  True
 	while intro:
@@ -729,6 +749,6 @@ def intro_loop():
 		screen.blit(intro_img, [0,0])
 		pygame.display.flip()
 
-# intro_loop()
+intro_loop()
 game_loop()
-# game_over()
+game_over()
