@@ -45,8 +45,8 @@ cursor_img_rect = cursor_img.get_rect()
 QUITGAME = False 
 
 # Background Music
-pygame.mixer.music.load("music/musicbg.mp3")
-pygame.mixer.music.play(-1, 0.0)
+# pygame.mixer.music.load("music/musicbg.mp3")
+# pygame.mixer.music.play(-1, 0.0)
 
 # Building Class Descriptions
 
@@ -71,7 +71,6 @@ class Tall1(pygame.sprite.Sprite):
 		else:
 			self.image = pygame.Surface([0,0])
 			self.rect = self.image.get_rect(width=0, height=0)
-		
 tall1_group = pygame.sprite.Group()
 tall1_sprite1 = Tall1(322, 790)
 tall1_sprite2 = Tall1(787, 790)
@@ -81,62 +80,106 @@ allBuildings.add(tall1_sprite1)
 allBuildings.add(tall1_sprite2)
 
 class Tall2(pygame.sprite.Sprite):
-	def __init__(self, width, height, x, y):
+	def __init__(self, x, y):
 		super().__init__()
-		self.image = pygame.Surface([width, height])
-		self.image = tall2
+		self.total_stages = 2
+		self.stages = [tall2d2, tall2d1, tall2]
+		self.image = self.stages[self.total_stages]
 		self.rect = self.image.get_rect()
-		self.rect.x = x 
-		self.rect.y = y
+		self.originX = x
+		self.originY = y
+		self.rect.x = self.originX
+		self.rect.y = self.originY
+	def destroy(self):
+		if (self.total_stages > 0):
+			self.total_stages = self.total_stages - 1
+			self.image = self.stages[self.total_stages]
+			self.rect = self.image.get_rect(x=self.originX, y=self.originY)
+		else:
+			self.image = pygame.Surface([0,0])
+			self.rect = self.image.get_rect(width=0, height=0)
 tall2_group = pygame.sprite.Group()
-tall2_sprite1 = Tall2(125, 196, 0 ,764)
-tall2_sprite2 = Tall2(116, 140, 935, 764)
+tall2_sprite1 = Tall2(0 ,764)
+tall2_sprite2 = Tall2(935, 764)
 tall2_group.add(tall2_sprite1)
 tall2_group.add(tall2_sprite2)
 allBuildings.add(tall2_sprite1)
 allBuildings.add(tall2_sprite2)
 
 class Tall3(pygame.sprite.Sprite):
-	def __init__(self, width, height, x, y):
+	def __init__(self, x, y):
 		super().__init__()
-		self.image = pygame.Surface([width, height])
-		self.image = tall3
+		self.total_stages = 2
+		self.stages = [tall3d2, tall3d1, tall3]
+		self.image = self.stages[self.total_stages]
 		self.rect = self.image.get_rect()
-		self.rect.x = x 
-		self.rect.y = y
+		self.originX = x
+		self.originY = y
+		self.rect.x = self.originX
+		self.rect.y = self.originY
+	def destroy(self):
+		if (self.total_stages > 0):
+			self.total_stages = self.total_stages - 1
+			self.image = self.stages[self.total_stages]
+			self.rect = self.image.get_rect(x=self.originX, y=self.originY)
+		else:
+			self.image = pygame.Surface([0,0])
+			self.rect = self.image.get_rect(width=0, height=0)
 tall3_group = pygame.sprite.Group()
-tall3_sprite1 = Tall3(125, 196, 560 ,764)
-tall3_sprite2 = Tall3(116, 140, 1160, 764)
+tall3_sprite1 = Tall3(560 ,764)
+tall3_sprite2 = Tall3(1160, 764)
 tall3_group.add(tall3_sprite1)
 tall3_group.add(tall3_sprite2)
 allBuildings.add(tall3_sprite1)
 allBuildings.add(tall3_sprite2)
 
 class Medium1(pygame.sprite.Sprite):
-	def __init__(self, width, height, x, y):
+	def __init__(self, x, y):
 		super().__init__()
-		self.image = pygame.Surface([width, height])
-		self.image = medium1
+		self.total_stages = 2
+		self.stages = [medium1d2, medium1d1, medium1]
+		self.image = self.stages[self.total_stages]
 		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
+		self.originX = x
+		self.originY = y
+		self.rect.x = self.originX
+		self.rect.y = self.originY
+	def destroy(self):
+		if (self.total_stages > 0):
+			self.total_stages = self.total_stages - 1
+			self.image = self.stages[self.total_stages]
+			self.rect = self.image.get_rect(x=self.originX, y=self.originY)
+		else:
+			self.image = pygame.Surface([0,0])
+			self.rect = self.image.get_rect(width=0, height=0)
 Medium1_group = pygame.sprite.Group()
-Medium1_sprite1 = Medium1(116, 140, 674, 820)
+Medium1_sprite1 = Medium1(674, 820)
 Medium1_group.add(Medium1_sprite1)
 allBuildings.add(Medium1_sprite1)
 
 class Medium2(pygame.sprite.Sprite):
-	def __init__(self, width, height, x, y):
+	def __init__(self, x, y):
 		super().__init__()
-		self.image = pygame.Surface([width, height])
-		self.image = medium2
+		self.total_stages = 2
+		self.stages = [medium2d2, medium2d1, medium2]
+		self.image = self.stages[self.total_stages]
 		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
+		self.originX = x
+		self.originY = y
+		self.rect.x = self.originX
+		self.rect.y = self.originY
+	def destroy(self):
+		if (self.total_stages > 0):
+			self.total_stages = self.total_stages - 1
+			self.image = self.stages[self.total_stages]
+			self.rect = self.image.get_rect(x=self.originX, y=self.originY)
+		else:
+			self.image = pygame.Surface([0,0])
+			self.rect = self.image.get_rect(width=0, height=0)
 Medium2_group = pygame.sprite.Group()
-Medium2_sprite1 = Medium2(116, 140, 120, 820)
-Medium2_sprite2 = Medium2(116, 140, 470, 820)
-Medium2_sprite3 = Medium2(116, 140, 1050, 820)
+Medium2_sprite1 = Medium2(120, 820)
+Medium2_sprite2 = Medium2(470, 820)
+Medium2_sprite3 = Medium2(1050, 820)
 Medium2_group.add(Medium2_sprite1)
 Medium2_group.add(Medium2_sprite2)
 Medium2_group.add(Medium2_sprite3)
@@ -145,41 +188,74 @@ allBuildings.add(Medium2_sprite2)
 allBuildings.add(Medium2_sprite3)
 
 class Small1(pygame.sprite.Sprite):
-	def __init__(self, width, height, x, y):
+	def __init__(self, x, y):
 		super().__init__()
-		self.image = pygame.Surface([width, height])
-		self.image = small1
+		self.total_stages = 1
+		self.stages = [small1d1, small1]
+		self.image = self.stages[self.total_stages]
 		self.rect = self.image.get_rect()
-		self.rect.x = x 
-		self.rect.y = y
+		self.originX = x
+		self.originY = y
+		self.rect.x = self.originX
+		self.rect.y = self.originY
+	def destroy(self):
+		if (self.total_stages > 0):
+			self.total_stages = self.total_stages - 1
+			self.image = self.stages[self.total_stages]
+			self.rect = self.image.get_rect(x=self.originX, y=self.originY)
+		else:
+			self.image = pygame.Surface([0,0])
+			self.rect = self.image.get_rect(width=0, height=0)
 small1_group = pygame.sprite.Group()
-small1_sprite1 = Small1(82, 70, 390, 890)
+small1_sprite1 = Small1(390, 890)
 small1_group.add(small1_sprite1)
 allBuildings.add(small1_sprite1)
 
 class Small2(pygame.sprite.Sprite):
-	def __init__(self, width, height, x, y):
+	def __init__(self, x, y):
 		super().__init__()
-		self.image = pygame.Surface([width, height])
-		self.image = small2
+		self.total_stages = 1
+		self.stages = [small2d1, small2]
+		self.image = self.stages[self.total_stages]
 		self.rect = self.image.get_rect()
-		self.rect.x = x 
-		self.rect.y = y
+		self.originX = x
+		self.originY = y
+		self.rect.x = self.originX
+		self.rect.y = self.originY
+	def destroy(self):
+		if (self.total_stages > 0):
+			self.total_stages = self.total_stages - 1
+			self.image = self.stages[self.total_stages]
+			self.rect = self.image.get_rect(x=self.originX, y=self.originY)
+		else:
+			self.image = pygame.Surface([0,0])
+			self.rect = self.image.get_rect(width=0, height=0)
 small2_group = pygame.sprite.Group()
-small2_sprite1 = Small2(82, 70, 854, 890)
+small2_sprite1 = Small2(854, 890)
 small2_group.add(small2_sprite1)
 allBuildings.add(small2_sprite1)
 
 class Small3(pygame.sprite.Sprite):
-	def __init__(self, width, height, x, y):
+	def __init__(self, x, y):
 		super().__init__()
-		self.image = pygame.Surface([width, height])
-		self.image = small3
+		self.total_stages = 1
+		self.stages = [small3d1, small3]
+		self.image = self.stages[self.total_stages]
 		self.rect = self.image.get_rect()
-		self.rect.x = x 
-		self.rect.y = y
+		self.originX = x
+		self.originY = y
+		self.rect.x = self.originX
+		self.rect.y = self.originY
+	def destroy(self):
+		if (self.total_stages > 0):
+			self.total_stages = self.total_stages - 1
+			self.image = self.stages[self.total_stages]
+			self.rect = self.image.get_rect(x=self.originX, y=self.originY)
+		else:
+			self.image = pygame.Surface([0,0])
+			self.rect = self.image.get_rect(width=0, height=0)
 small3_group = pygame.sprite.Group()
-small3_sprite1 = Small3(97, 77, 236, 860)
+small3_sprite1 = Small3(236, 860)
 small3_group.add(small3_sprite1)
 allBuildings.add(small3_sprite1)
 
@@ -224,7 +300,7 @@ class User_barrel(pygame.sprite.Sprite):
 		self.rect.x = 618
 		self.rect.y = 720
 		self.angle = 0
-		self.dir = 10
+		self.dir = 5
 		centerX = 620
 		centerY = 733
 		self.rect.center = (centerX, centerY)
@@ -537,7 +613,7 @@ all_bullets = pygame.sprite.Group()
 computer_bullets = pygame.sprite.Group()
 
 def game_loop():
-	global QUITGAME, SCORE, FIRED, DELAY, READY, shot, FUSION
+	global QUITGAME, SCORE, FIRED, DELAY, READY, shot, FUSION # no_Meteor1, no_Meteor2, no_Meteor3, no_Meteor4
 	while not QUITGAME:
 		# Background Refresh
 		screen.blit(background_img, [0,0])
@@ -559,31 +635,23 @@ def game_loop():
 		fusionQ = "{:01d}".format(FUSION)
 		fusionText = scoreFont.render(str(fusionQ), True, (255,255,255))
 		screen.blit(fusionText, (1160,30))
-		
-
-
-
-		
+				
 		# Meteor timing
 		ticks = int(pygame.time.get_ticks()/1000)
 		meteor1_group.update()
 		meteor1_group.draw(screen)
-		if ticks >= 5:
+		if ticks >= 60:
 			meteor2_group.update()
 			meteor2_group.draw(screen)
-		if ticks >= 10:
+		if ticks >= 120:
 			meteor3_group.update()
 			meteor3_group.draw(screen)
-		if ticks >= 20:
+		if ticks >= 180:
 			meteor4_group.update()
 			meteor4_group.draw(screen)
-
-
 		
 		allBuildings.draw(screen)
 		
-
-
 		# User Bullets
 		bullet_main_group.draw(screen)
 		bullet_main_group.update()
@@ -640,6 +708,37 @@ def game_loop():
 			tall1_sprite1.destroy()
 		if pygame.sprite.spritecollide(tall1_sprite2, all_meteors_group, True):
 			tall1_sprite2.destroy()
+		if pygame.sprite.spritecollide(tall2_sprite1, all_meteors_group, True):
+			tall2_sprite1.destroy()	
+		if pygame.sprite.spritecollide(tall2_sprite2, all_meteors_group, True):
+			tall2_sprite2.destroy()
+		if pygame.sprite.spritecollide(tall3_sprite1, all_meteors_group, True):
+			tall3_sprite1.destroy()
+		if pygame.sprite.spritecollide(tall3_sprite2, all_meteors_group, True):
+			tall3_sprite2.destroy()
+		if pygame.sprite.spritecollide(Medium1_sprite1, all_meteors_group, True):
+			Medium1_sprite1.destroy()		
+		if pygame.sprite.spritecollide(Medium2_sprite1, all_meteors_group, True):
+			Medium2_sprite1.destroy()
+		if pygame.sprite.spritecollide(Medium2_sprite2, all_meteors_group, True):
+			Medium2_sprite2.destroy()		
+		if pygame.sprite.spritecollide(Medium2_sprite3, all_meteors_group, True):
+			Medium2_sprite3.destroy()
+		if pygame.sprite.spritecollide(small1_sprite1, all_meteors_group, True):
+			small1_sprite1.destroy()		
+		if pygame.sprite.spritecollide(small2_sprite1, all_meteors_group, True):
+			small2_sprite1.destroy()
+		if pygame.sprite.spritecollide(small3_sprite1, all_meteors_group, True):
+			small3_sprite1.destroy()		
+
+		if len(meteor1_group) < no_Meteor1:
+			add_meteor(Meteor1, meteor1_group)
+		if len(meteor2_group) < no_Meteor2:
+			add_meteor(Meteor2, meteor2_group)
+		if len(meteor3_group) < no_Meteor3:
+			add_meteor(Meteor3, meteor3_group)
+		if len(meteor4_group) < no_Meteor4:
+			add_meteor(Meteor4, meteor4_group)	
 
 		# collision = pygame.sprite.groupcollide(meteor1_group, allBuildings, False, False)
 		# meteor_hit = collision.keys()
@@ -669,74 +768,42 @@ def game_loop():
 		if bullet_main_group_meteor1_collision:
 			SCORE = SCORE + 100
 			FUSION = FUSION + 2
-			add_meteor(Meteor1, meteor1_group)
-
 		if bullet_main_group_meteor2_collision:
 			SCORE = SCORE + 200
 			FUSION = FUSION + 4
-			meteor2_sprite = Meteor2()
-			meteor2_group.add(meteor2_sprite)
-			all_meteors_group.add(meteor2_sprite)
-
 		if bullet_main_group_meteor3_collision:
 			SCORE = SCORE + 250
 			FUSION = FUSION + 6
-			meteor3_sprite = Meteor3()
-			meteor3_group.add(meteor3_sprite)
-			all_meteors_group.add(meteor3_sprite)
-
 		if bullet_main_group_meteor4_collision:
 			SCORE = SCORE + 400
 			FUSION = FUSION + 8
-			meteor4_sprite = Meteor4()
-			meteor4_group.add(meteor4_sprite)
-			all_meteors_group.add(meteor4_sprite)
-
 		if computer_bullets_meteor1_collision:
 			SCORE = SCORE + 50
 			FUSION = FUSION + 1
-			meteor1_sprite = Meteor1()
-			meteor1_group.add(meteor1_sprite)
-			all_meteors_group.add(meteor1_sprite)
-
 		if computer_bullets_meteor2_collision:
 			SCORE = SCORE + 100
 			FUSION = FUSION + 2
-			meteor2_sprite = Meteor2()
-			meteor2_group.add(meteor2_sprite)
-			all_meteors_group.add(meteor2_sprite)
-
 		if computer_bullets_meteor3_collision:
 			SCORE = SCORE + 125
 			FUSION = FUSION + 3
-			meteor3_sprite = Meteor3()
-			meteor3_group.add(meteor3_sprite)
-			all_meteors_group.add(meteor3_sprite)
-
 		if computer_bullets_meteor4_collision:
 			SCORE = SCORE + 200
 			FUSION = FUSION + 4
-			meteor4_sprite = Meteor4()
-			meteor4_group.add(meteor4_sprite)
-			all_meteors_group.add(meteor4_sprite)
+
+
+		pressed_key = pygame.key.get_pressed()
+		if pressed_key[pygame.K_LEFT]:
+			user_barrel_sprite.turn_left()  
+		if pressed_key[pygame.K_RIGHT]:
+			user_barrel_sprite.turn_right()	
 
 		for event in pygame.event.get():
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_SPACE:
 					if len(bullet_main_group) <= 5:
-						newBullet = Bullet_main()
-						newBullet.direction(USERANGLE)
-						bullet_main_group.add(newBullet)
-						all_bullets.add(newBullet)
-
-				if event.key == pygame.K_LEFT:
-					user_barrel_sprite.turn_left()
-				if event.key == pygame.K_RIGHT:
-					user_barrel_sprite.turn_right()
-					
-			elif event.type == pygame.QUIT:
+						add_bullet(Bullet_main, USERANGLE, bullet_main_group)
+			if event.type == pygame.QUIT:
 				QUITGAME = True
-
 		pygame.display.flip()
 def game_over():
 	game_over = True
@@ -745,8 +812,8 @@ def game_over():
 			if event.type == pygame.QUIT:
 				game_over = False
 		screen.blit(game_over_img, [0,0])
-		score = scoreFont.render(str(SCORE), True, (255,255,255))
-		screen.blit(score, (670, 565))
+		score_total = scoreFont.render(str((FUSION * 10) + SCORE), True, (255,255,255))
+		screen.blit(score_total, (670, 565))
 		pygame.display.flip()
 def intro_loop():
 	intro =  True
@@ -760,36 +827,17 @@ def intro_loop():
 		screen.blit(intro_img, [0,0])
 		pygame.display.flip()
 def fire_bullets():
-	global ANGLE1, ANGLE2, ANGLE4, ANGLE5, ANGLE6
-	newBullet1 = Bullet1()
-	newBullet1.direction(ANGLE1)
-	bullet1_group.add(newBullet1)
-	all_bullets.add(newBullet1)
-	computer_bullets.add(newBullet1)
+	global ANGLE1, ANGLE2, ANGLE4, ANGLE5, ANGLE6	
 	
-	newBullet2 = Bullet2()
-	newBullet2.direction(ANGLE2)
-	bullet2_group.add(newBullet2)
-	all_bullets.add(newBullet2)
-	computer_bullets.add(newBullet2)
+def add_bullet(Type, angle, type_group):
+	bullet_sprite = Type()
+	bullet_sprite.direction(angle)
+	type_group.add(bullet_sprite)
+	all_bullets.add(bullet_sprite)
+	print(type_group)
+	if type_group != bullet_main_group:
+		computer_bullets.add(bullet_sprite)
 
-	newBullet4 = Bullet4()
-	newBullet4.direction(ANGLE4)
-	bullet4_group.add(newBullet4)
-	all_bullets.add(newBullet4)
-	computer_bullets.add(newBullet4)
-
-	newBullet5 = Bullet5()
-	newBullet5.direction(ANGLE5)
-	bullet5_group.add(newBullet5)
-	all_bullets.add(newBullet5)
-	computer_bullets.add(newBullet5)
-
-	newBullet6 = Bullet6()
-	newBullet6.direction(ANGLE6)
-	bullet6_group.add(newBullet6)
-	all_bullets.add(newBullet6)
-	computer_bullets.add(newBullet6)	
-# intro_loop()
+intro_loop()
 game_loop()
-# game_over()
+game_over()

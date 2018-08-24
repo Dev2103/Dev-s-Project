@@ -11,7 +11,7 @@ class Meteor1(pygame.sprite.Sprite):
 		self.image = meteor1
 		self.rect = self.image.get_rect()
 		self.rect.x = random.randrange(0, 1200)
-		self.rect.y = random.randrange(-500, 0)
+		self.rect.y = random.randrange(-1500, 0)
 		self.speed = 2.4
 	def update(self):
 		global QUITGAME
@@ -33,7 +33,7 @@ class Meteor2(pygame.sprite.Sprite):
 	def update(self):
 		self.rect.y = self.rect.y + self.speed
 		self.rect.x = self.rect.x + random.randrange(-1,2)
-		if self.rect.y >= 500:
+		if self.rect.y >= 960:
 			self.rect.x = random.randrange(0, 1280)
 			self.rect.y = random.randrange(-3000,0)
 
@@ -49,7 +49,7 @@ class Meteor3(pygame.sprite.Sprite):
 	def update(self):
 		self.rect.y = self.rect.y + self.speed
 		self.rect.x = self.rect.x + random.randrange(-1,2)
-		if self.rect.y >= 500:
+		if self.rect.y >= 960:
 			self.rect.x = random.randrange(0, 1280)
 			self.rect.y = random.randrange(-3000,0)
 
@@ -65,7 +65,7 @@ class Meteor4(pygame.sprite.Sprite):
 	def update(self):
 		self.rect.y = self.rect.y + self.speed
 		self.rect.x = self.rect.x + random.randrange(-1,2)
-		if self.rect.y >= 500:
+		if self.rect.y >= 960:
 			self.rect.x = random.randrange(0, 1280)
 			self.rect.y = random.randrange(-3000,0)
 
@@ -75,10 +75,10 @@ def add_meteor(Type, type_group):
 	all_meteors_group.add(meteor_sprite)
 
 # Meteor Sprite Creation
-no_Meteor1 = 8
-no_Meteor2 = 5
-no_Meteor3 = 5
-no_Meteor4 = 5
+no_Meteor1 = 6
+no_Meteor2 = 4
+no_Meteor3 = 4
+no_Meteor4 = 4
 all_meteors_group = pygame.sprite.Group()
 meteor1_group = pygame.sprite.Group()
 meteor2_group = pygame.sprite.Group()
