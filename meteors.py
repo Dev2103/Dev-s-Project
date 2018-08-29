@@ -1,6 +1,7 @@
 import pygame
 import random
 import math
+from global_vars import *
 from assets import meteor1, meteor2, meteor3, meteor4
 
 # Meteor Class Descriptions
@@ -13,6 +14,7 @@ class Meteor1(pygame.sprite.Sprite):
 		self.rect.x = random.randrange(0, 1200)
 		self.rect.y = random.randrange(-1500, 0)
 		self.speed = 2.4
+		self.health = 2
 	def update(self):
 		global QUITGAME
 		self.rect.y = self.rect.y + self.speed
@@ -20,6 +22,9 @@ class Meteor1(pygame.sprite.Sprite):
 		if self.rect.y >= 960:
 			self.rect.x = random.randrange(0, 1280)
 			self.rect.y = random.randrange(-2000, 0)
+	def hit(self):
+		self.health = self.health - 1
+		return self.health
 
 class Meteor2(pygame.sprite.Sprite):
 	# Constructor
@@ -30,12 +35,16 @@ class Meteor2(pygame.sprite.Sprite):
 		self.rect.x = random.randrange(0, 1200)
 		self.rect.y = random.randrange(-3000,0)
 		self.speed = 1.5
+		self.health = 4
 	def update(self):
 		self.rect.y = self.rect.y + self.speed
 		self.rect.x = self.rect.x + random.randrange(-1,2)
 		if self.rect.y >= 960:
 			self.rect.x = random.randrange(0, 1280)
 			self.rect.y = random.randrange(-3000,0)
+	def hit(self):
+		self.health = self.health - 1
+		return self.health
 
 class Meteor3(pygame.sprite.Sprite):
 	def __init__(self):
@@ -46,12 +55,16 @@ class Meteor3(pygame.sprite.Sprite):
 		self.rect.x = random.randrange(0, 1200)
 		self.rect.y = random.randrange(-1500, 0)
 		self.speed = 3
+		self.health = 1
 	def update(self):
 		self.rect.y = self.rect.y + self.speed
 		self.rect.x = self.rect.x + random.randrange(-1,2)
 		if self.rect.y >= 960:
 			self.rect.x = random.randrange(0, 1280)
 			self.rect.y = random.randrange(-3000,0)
+	def hit(self):
+		self.health = self.health - 1
+		return self.health
 
 class Meteor4(pygame.sprite.Sprite):
 	def __init__(self):
@@ -62,12 +75,16 @@ class Meteor4(pygame.sprite.Sprite):
 		self.rect.x = random.randrange(0, 1200)
 		self.rect.y = random.randrange(-1500,0)
 		self.speed = 1.7
+		self.health = 8
 	def update(self):
 		self.rect.y = self.rect.y + self.speed
 		self.rect.x = self.rect.x + random.randrange(-1,2)
 		if self.rect.y >= 960:
 			self.rect.x = random.randrange(0, 1280)
 			self.rect.y = random.randrange(-3000,0)
+	def hit(self):
+		self.health = self.health - 1
+		return self.health
 
 def add_meteor(Type, type_group):
 	meteor_sprite = Type()
