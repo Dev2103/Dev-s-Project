@@ -1,9 +1,12 @@
 import pygame
 
-
 intro_img = pygame.image.load("img/Intro.png")
 game_over_img = pygame.image.load("img/game_over.png")
 background_img = pygame.image.load("img/bg.png")
+how_to_play_img = pygame.image.load("img/how_to_play.png")
+
+size = (1280,960)
+screen = pygame.display.set_mode(size)
 
 tall1 = pygame.transform.scale(pygame.image.load("img/tall1.png"), [65,170])#790
 tall1d1 = pygame.transform.scale(pygame.image.load("img/tall1d1.png"), [65,170])

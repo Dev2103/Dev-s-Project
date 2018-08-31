@@ -15,8 +15,8 @@ pygame.mixer.init()
 
 
 # Game Settings
-size = (1280,960) # so we can change later
-screen = pygame.display.set_mode(size)
+
+
 pygame.display.set_caption("Skyline Defence")
 clock = pygame.time.Clock()
 timerFont = pygame.font.Font(None, 36)
@@ -30,8 +30,8 @@ cursor_img_rect = cursor_img.get_rect()
 QUITGAME = False 
 
 # Background Music 
-# pygame.mixer.music.load("music/musicbg.mp3")
-# pygame.mixer.music.play(-1, 0.0)
+pygame.mixer.music.load("music/musicbg.mp3")
+pygame.mixer.music.play(-1, 0.0)
 
 # Building Class Descriptions
 
@@ -625,16 +625,22 @@ def game_loop():
 		ticks = int(pygame.time.get_ticks()/1000)
 		meteor1_group.update()
 		meteor1_group.draw(screen)
-		if ticks >= 60:
+		if ticks >= 120:
 			meteor2_group.update()
 			meteor2_group.draw(screen)
-		if ticks >= 120:
+		if ticks >= 180:
 			meteor3_group.update()
 			meteor3_group.draw(screen)
-		if ticks >= 180:
+		if ticks >= 240:
 			meteor4_group.update()
 			meteor4_group.draw(screen)
 		
+
+		# Game Over
+		for sprite in all_meteors_group.sprites():
+			if (sprite.check_y() >= 959):
+				QUITGAME = True
+
 		all_buildings.draw(screen)
 		
 		# User Bullets
@@ -800,17 +806,27 @@ def game_loop():
 				QUITGAME = True
 		
 		pygame.display.flip()
-
+def how_to_play():
+	how_to_play = True
+	while how_to_play:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				how_to_play = False
+			elif event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_SPACE:
+					how_to_play = False
+		screen.blit(how_to_play_img, [0,0])
+		pygame.display.flip()
 def game_over():
 	game_over = True
 	while game_over:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				game_over = False
-		screen.blit(game_over_img, [0,0])
-		score_total = scoreFont.render(str((FUSION * 10) + SCORE), True, (255,255,255))
-		screen.blit(score_total, (670, 565))
-		pygame.display.flip()
+	screen.blit(game_over_img, [0,0])
+	score_total = scoreFont.render(str((FUSION * 10) + SCORE), True, (255,255,255))
+	screen.blit(score_total, (670, 565))
+	pygame.display.flip()
 def intro_loop():
 	intro =  True
 	while intro:
@@ -819,6 +835,9 @@ def intro_loop():
 				intro = False
 			elif event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_SPACE:
+					intro = False
+				if event.key == pygame.K_h:
+					how_to_play()
 					intro = False
 		screen.blit(intro_img, [0,0])
 		pygame.display.flip()
@@ -845,3 +864,28 @@ def add_bullet(Type, angle, type_group):
 intro_loop()
 game_loop()
 game_over()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

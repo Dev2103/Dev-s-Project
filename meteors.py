@@ -2,7 +2,8 @@ import pygame
 import random
 import math
 from global_vars import *
-from assets import meteor1, meteor2, meteor3, meteor4
+from assets import *
+
 
 # Meteor Class Descriptions
 class Meteor1(pygame.sprite.Sprite):
@@ -13,10 +14,9 @@ class Meteor1(pygame.sprite.Sprite):
 		self.rect = self.image.get_rect()
 		self.rect.x = random.randrange(0, 1200)
 		self.rect.y = random.randrange(-1500, 0)
-		self.speed = 2.4
+		self.speed = 2
 		self.health = 2
 	def update(self):
-		global QUITGAME
 		self.rect.y = self.rect.y + self.speed
 		self.rect.x = self.rect.x + random.randrange(-1,2)
 		if self.rect.y >= 960:
@@ -25,6 +25,8 @@ class Meteor1(pygame.sprite.Sprite):
 	def hit(self):
 		self.health = self.health - 1
 		return self.health
+	def check_y(self):
+		return self.rect.y
 
 class Meteor2(pygame.sprite.Sprite):
 	# Constructor
@@ -34,7 +36,7 @@ class Meteor2(pygame.sprite.Sprite):
 		self.rect = self.image.get_rect()
 		self.rect.x = random.randrange(0, 1200)
 		self.rect.y = random.randrange(-3000,0)
-		self.speed = 1.5
+		self.speed = 1.4
 		self.health = 4
 	def update(self):
 		self.rect.y = self.rect.y + self.speed
@@ -45,6 +47,8 @@ class Meteor2(pygame.sprite.Sprite):
 	def hit(self):
 		self.health = self.health - 1
 		return self.health
+	def check_y(self):
+		return self.rect.y
 
 class Meteor3(pygame.sprite.Sprite):
 	def __init__(self):
@@ -65,6 +69,8 @@ class Meteor3(pygame.sprite.Sprite):
 	def hit(self):
 		self.health = self.health - 1
 		return self.health
+	def check_y(self):
+		return self.rect.y
 
 class Meteor4(pygame.sprite.Sprite):
 	def __init__(self):
@@ -85,6 +91,8 @@ class Meteor4(pygame.sprite.Sprite):
 	def hit(self):
 		self.health = self.health - 1
 		return self.health
+	def check_y(self):
+		return self.rect.y
 
 def add_meteor(Type, type_group):
 	meteor_sprite = Type()
@@ -92,10 +100,10 @@ def add_meteor(Type, type_group):
 	all_meteors_group.add(meteor_sprite)
 
 # Meteor Sprite Creation
-no_Meteor1 = 6
-no_Meteor2 = 4
-no_Meteor3 = 4
-no_Meteor4 = 4
+no_Meteor1 = 3
+no_Meteor2 = 3
+no_Meteor3 = 3
+no_Meteor4 = 3
 all_meteors_group = pygame.sprite.Group()
 meteor1_group = pygame.sprite.Group()
 meteor2_group = pygame.sprite.Group()
