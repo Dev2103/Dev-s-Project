@@ -100,7 +100,7 @@ def add_meteor(Type, type_group):
 	all_meteors_group.add(meteor_sprite)
 
 # Meteor Sprite Creation
-no_Meteor1 = 3
+no_Meteor1 = 10
 no_Meteor2 = 3
 no_Meteor3 = 3
 no_Meteor4 = 3

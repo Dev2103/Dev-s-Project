@@ -637,9 +637,9 @@ def game_loop():
 		
 
 		# Game Over
-		for sprite in all_meteors_group.sprites():
-			if (sprite.check_y() >= 959):
-				QUITGAME = True
+		# for sprite in all_meteors_group.sprites():
+		# 	if (sprite.check_y() >= 200):
+		# 		game_over()
 
 		all_buildings.draw(screen)
 		
@@ -670,7 +670,7 @@ def game_loop():
 		gun_group.draw(screen)
 
 		#coin
-		screen.blit(fusion , [1120, 20])
+		screen.blit(fusion ,[1120, 20])
 
 		#buttons
 		screen.blit(upgrade_faded, [20,780])
@@ -707,6 +707,8 @@ def game_loop():
 				gun_sprite2.kill()
 				barrel_sprite2.kill()
 				GUN2 = False
+			# elif building_hit == tall3_sprite1:
+			# 	game_over()
 			elif building_hit == tall1_sprite2:
 				gun_sprite4.kill()
 				barrel_sprite4.kill()
@@ -797,6 +799,7 @@ def game_loop():
 			user_barrel_sprite.turn_left()  
 		if pressed_key[pygame.K_RIGHT]:
 			user_barrel_sprite.turn_right()	
+		
 		for event in pygame.event.get():
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_SPACE:
@@ -864,28 +867,3 @@ def add_bullet(Type, angle, type_group):
 intro_loop()
 game_loop()
 game_over()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
