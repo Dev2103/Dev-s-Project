@@ -16,7 +16,7 @@ pygame.mixer.init()
 
 # Game Settings
 
-
+QUITGAME = False
 pygame.display.set_caption("Skyline Defence")
 clock = pygame.time.Clock()
 timerFont = pygame.font.Font(None, 36)
@@ -26,12 +26,9 @@ cursor_img = pygame.transform.scale(pygame.image.load("img/cursor.png") , [12 , 
 cursor_img_rect = cursor_img.get_rect()
 
 
-# Global Variables
-QUITGAME = False 
-
 # Background Music 
-pygame.mixer.music.load("music/musicbg.mp3")
-pygame.mixer.music.play(-1, 0.0)
+# pygame.mixer.music.load("music/musicbg.mp3")
+# pygame.mixer.music.play(-1, 0.0)
 
 # Building Class Descriptions
 
@@ -39,7 +36,7 @@ all_buildings = pygame.sprite.Group()
 
 class Tall1(pygame.sprite.Sprite):
 	def __init__(self, x, y):
-		super().__init__()
+		super().__init__() 
 		self.total_stages = 2
 		self.stages = [tall1d2, tall1d1, tall1]
 		self.image = self.stages[self.total_stages]
@@ -248,30 +245,25 @@ all_buildings.add(small3_sprite1)
 
 # Guns class description
 class Gun(pygame.sprite.Sprite):
-	def __init__(self, width, height, x, y):
+	def __init__(self, x, y):
 		super().__init__()
-		self.image = pygame.Surface([width, height])
+		self.image = pygame.Surface([80, 38])
 		self.image = gun1
 		self.rect  = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
-	def update(self):
- 		self.image = gun2
+		self.originX = x
+		self.originY = y
+		self.rect.x = self.originX
+		self.rect.y = self.originY
+		self.upgraded = False
+	def upgrade(self):
+		self.image = gun2
+		self.rect = self.image.get_rect(x=self.originX, y=self.originY)
+		self.upgraded = True
+	def upgrade_status(self):
+		return self.upgraded
 gun_group =  pygame.sprite.Group()
-gun_sprite1 = Gun(80, 38, 27, 730)
-gun_sprite2 = Gun(80, 38, 315, 753)
-gun_sprite3 = Gun(80,38, 580, 730)
-gun_sprite4 = Gun(80, 38, 780, 753)
-gun_sprite5 = Gun(80, 38, 960, 730)
-gun_sprite6 = Gun(80, 38, 1180, 730)
-gun_group.add(gun_sprite1)
-gun_group.add(gun_sprite2)
-gun_group.add(gun_sprite3)
-gun_group.add(gun_sprite4)
-gun_group.add(gun_sprite5)
-gun_group.add(gun_sprite6)
-
-
+gun_sprite = Gun(580, 730)
+gun_group.add(gun_sprite)
 
 barrel_group = pygame.sprite.Group()
 
@@ -309,156 +301,43 @@ user_barrel_sprite = User_barrel()
 barrel_group.add(user_barrel_sprite)
 
 # Computer Barrels
-class Barrel1(pygame.sprite.Sprite):
-	def __init__(self, x, y, left_limit, right_limit):
+class Barrel(pygame.sprite.Sprite):
+	def __init__(self, x, y, left, right):
 		super().__init__()
 		self.imageMaster = barrel
 		self.image = self.imageMaster
 		self.rect = self.image.get_rect()
 		self.rect.x = x
 		self.rect.y = y
-		self.left_limit = 0 - right_limit
-		self.right_limit = 0 - left_limit
+		self.originX = x
+		self.left_limit = left
+		self.right_limit = right
 		self.angle = 0
 		self.dir = 5
 		centerX = x + 2
 		centerY = y + 13
-		self.rect.center = (centerX, centerY)	
+		self.rect.center = (centerX, centerY)
 	def update(self):
-		global ANGLE1
+		global ANGLE1, ANGLE2, ANGLE4, ANGLE5, ANGLE6
 		self.angle = self.angle + self.dir
 		if self.angle >= self.right_limit:
 			self.dir = -1
 		elif self.angle <= self.left_limit:
 			self.dir = 1
-		ANGLE1 = 0 - self.angle
+		if self.originX == 65:
+			ANGLE1 = 0 - self.angle
+		elif self.originX == 353:
+			ANGLE2 = 0 - self.angle
+		elif self.originX == 818:
+			ANGLE4 = 0 - self.angle
+		elif self.originX == 998:
+			ANGLE5 = 0 - self.angle
+		elif self.originX == 1218:
+			ANGLE6 = 0 - self.angle
 		oldCenter = self.rect.center
 		self.image = pygame.transform.rotate(self.imageMaster, self.angle)
 		self.rect = self.image.get_rect()
 		self.rect.center = oldCenter
-
-class Barrel2(pygame.sprite.Sprite):
-	def __init__(self, x, y, left_limit, right_limit):
-		super().__init__()
-		self.imageMaster = barrel
-		self.image = self.imageMaster
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
-		self.left_limit = 0 - right_limit
-		self.right_limit = 0 - left_limit
-		self.angle = 0
-		self.dir = 5
-		centerX = x + 2
-		centerY = y + 13
-		self.rect.center = (centerX, centerY)	
-	def update(self):
-		global ANGLE2
-		self.angle = self.angle + self.dir
-		if self.angle >= self.right_limit:
-			self.dir = -1
-		elif self.angle <= self.left_limit:
-			self.dir = 1
-		ANGLE2 = 0 - self.angle
-		oldCenter = self.rect.center
-		self.image = pygame.transform.rotate(self.imageMaster, self.angle)
-		self.rect = self.image.get_rect()
-		self.rect.center = oldCenter
-
-class Barrel4(pygame.sprite.Sprite):
-	def __init__(self, x, y, left_limit, right_limit):
-		super().__init__()
-		self.imageMaster = barrel
-		self.image = self.imageMaster
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
-		self.left_limit = 0 - right_limit
-		self.right_limit = 0 - left_limit
-		self.angle = 0
-		self.dir = 5
-		centerX = x + 2
-		centerY = y + 13
-		self.rect.center = (centerX, centerY)	
-	def update(self):
-		global ANGLE4
-		self.angle = self.angle + self.dir
-		if self.angle >= self.right_limit:
-			self.dir = -1
-		elif self.angle <= self.left_limit:
-			self.dir = 1
-		ANGLE4 = 0 - self.angle
-		oldCenter = self.rect.center
-		self.image = pygame.transform.rotate(self.imageMaster, self.angle)
-		self.rect = self.image.get_rect()
-		self.rect.center = oldCenter
-
-class Barrel5(pygame.sprite.Sprite):
-	def __init__(self, x, y, left_limit, right_limit):
-		super().__init__()
-		self.imageMaster = barrel
-		self.image = self.imageMaster
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
-		self.left_limit = 0 - right_limit
-		self.right_limit = 0 - left_limit
-		self.angle = 0
-		self.dir = 5
-		centerX = x + 2
-		centerY = y + 13
-		self.rect.center = (centerX, centerY)	
-	def update(self):
-		global ANGLE5
-		self.angle = self.angle + self.dir
-		if self.angle >= self.right_limit:
-			self.dir = -1
-		elif self.angle <= self.left_limit:
-			self.dir = 1
-		ANGLE5 = 0 - self.angle
-		oldCenter = self.rect.center
-		self.image = pygame.transform.rotate(self.imageMaster, self.angle)
-		self.rect = self.image.get_rect()
-		self.rect.center = oldCenter
-
-class Barrel6(pygame.sprite.Sprite):
-	def __init__(self, x, y, left_limit, right_limit):
-		super().__init__()
-		self.imageMaster = barrel
-		self.image = self.imageMaster
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
-		self.left_limit = 0 - right_limit
-		self.right_limit = 0 - left_limit
-		self.angle = 0
-		self.dir = 5
-		centerX = x + 2
-		centerY = y + 13
-		self.rect.center = (centerX, centerY)	
-	def update(self):
-		global ANGLE6
-		self.angle = self.angle + self.dir
-		if self.angle >= self.right_limit:
-			self.dir = -1
-		elif self.angle <= self.left_limit:
-			self.dir = 1
-		ANGLE6 = 0 - self.angle
-		oldCenter = self.rect.center
-		self.image = pygame.transform.rotate(self.imageMaster, self.angle)
-		self.rect = self.image.get_rect()
-		self.rect.center = oldCenter
-
-barrel_sprite1 = Barrel1(65, 720, -30, 60)
-barrel_sprite2 = Barrel2(353, 743, -60, 60)
-barrel_sprite4 = Barrel4(818, 743, -60, 60)
-barrel_sprite5 = Barrel5(998, 720, -60, 60)
-barrel_sprite6 = Barrel6(1218,720, -60, 30)
-barrel_group.add(barrel_sprite1)
-barrel_group.add(barrel_sprite2)
-barrel_group.add(barrel_sprite4)
-barrel_group.add(barrel_sprite5)
-barrel_group.add(barrel_sprite6)
 
 # Bullet Main
 class User_Bullet(pygame.sprite.Sprite):
@@ -497,15 +376,13 @@ class Bullet1(pygame.sprite.Sprite):
 		self.angle = 0
 	def update(self):
 		self.rect.y = self.rect.y - 15
-		self.rect.x = self.rect.x + (15 * math.tan(math.radians(self.angle)))
-		
+		self.rect.x = self.rect.x + (15 * math.tan(math.radians(self.angle)))	
 		if self.rect.y <= 0:	
 			self.kill()
 	def direction(self, angle):
 		self.angle = angle
 
 bullet1_group = pygame.sprite.Group()
-
 
 class Bullet2(pygame.sprite.Sprite):
 	def __init__(self):
@@ -521,7 +398,6 @@ class Bullet2(pygame.sprite.Sprite):
 	def update(self):
 		self.rect.y = self.rect.y - 15
 		self.rect.x = self.rect.x + (15 * math.tan(math.radians(self.angle)))
-		
 		if self.rect.y <= 0:	
 			self.kill()
 	def direction(self, angle):
@@ -585,8 +461,7 @@ class Bullet6(pygame.sprite.Sprite):
 		self.angle = 0
 	def update(self):
 		self.rect.y = self.rect.y - 15
-		self.rect.x = self.rect.x + (15 * math.tan(math.radians(self.angle)))
-		
+		self.rect.x = self.rect.x + (15 * math.tan(math.radians(self.angle)))		
 		if self.rect.y <= 0:	
 			self.kill()
 	def direction(self, angle):
@@ -598,7 +473,9 @@ all_bullets = pygame.sprite.Group()
 computer_bullets = pygame.sprite.Group()
 
 def game_loop():
-	global QUITGAME, SCORE, FIRED, DELAY, READY, shot, FUSION, no_Meteor1, no_Meteor2, no_Meteor3, no_Meteor4, GUN1, GUN2, GUN4, GUN5, GUN6
+	global QUITGAME, SCORE, FIRED, DELAY, READY, shot, FUSION
+	global no_Meteor1, no_Meteor2, no_Meteor3, no_Meteor4
+	global GUN1, GUN2, GUN4, GUN5, GUN6, UPGRADE_GUN_MIN, ADD_GUN_MIN
 	while not QUITGAME:
 		# Background Refresh
 		screen.blit(background_img, [0,0])
@@ -625,22 +502,16 @@ def game_loop():
 		ticks = int(pygame.time.get_ticks()/1000)
 		meteor1_group.update()
 		meteor1_group.draw(screen)
-		if ticks >= 120:
+		if ticks >= 12:
 			meteor2_group.update()
 			meteor2_group.draw(screen)
-		if ticks >= 180:
+		if ticks >= 18:
 			meteor3_group.update()
 			meteor3_group.draw(screen)
-		if ticks >= 240:
+		if ticks >= 24:
 			meteor4_group.update()
 			meteor4_group.draw(screen)
 		
-
-		# Game Over
-		# for sprite in all_meteors_group.sprites():
-		# 	if (sprite.check_y() >= 200):
-		# 		game_over()
-
 		all_buildings.draw(screen)
 		
 		# User Bullets
@@ -663,10 +534,11 @@ def game_loop():
 		computer_bullets.draw(screen)
 		computer_bullets.update()
 
-		# Guns and Barrels
+		# Guns and Barrels		
 		barrel_group.clear(screen, background)
 		barrel_group.update()
 		barrel_group.draw(screen)
+
 		gun_group.draw(screen)
 
 		#coin
@@ -699,28 +571,6 @@ def game_loop():
 		if building_collision:
 			building_hit = list(building_collision.values())[0].pop()
 			building_hit.destroy()
-			if building_hit == tall2_sprite1:
-				gun_sprite1.kill()
-				barrel_sprite1.kill()
-				GUN1 = False
-			elif building_hit == tall1_sprite1:
-				gun_sprite2.kill()
-				barrel_sprite2.kill()
-				GUN2 = False
-			# elif building_hit == tall3_sprite1:
-			# 	game_over()
-			elif building_hit == tall1_sprite2:
-				gun_sprite4.kill()
-				barrel_sprite4.kill()
-				GUN4 = False
-			elif building_hit == tall2_sprite2:
-				gun_sprite5.kill()
-				barrel_sprite5.kill()
-				GUN5 = False
-			elif building_hit == tall3_sprite2:
-				gun_sprite6.kill()
-				barrel_sprite6.kill()
-				GUN6 = False
 			meteor_hit = list(building_collision.keys())[0]
 			if meteor1_group.has(meteor_hit):
 				meteor_hit.kill()
@@ -792,7 +642,7 @@ def game_loop():
 					add_meteor(Meteor4, meteor4_group)
 				SCORE = updated_score
 				FUSION = updated_fusion
-
+		
 		# User Barrel Controls
 		pressed_key = pygame.key.get_pressed()
 		if pressed_key[pygame.K_LEFT]:
@@ -805,10 +655,22 @@ def game_loop():
 				if event.key == pygame.K_SPACE:
 					if len(user_bullets) <= 5:
 						add_bullet(User_Bullet, USERANGLE, user_bullets)
+				if FUSION >= UPGRADE_GUN_MIN:
+					if event.key == pygame.K_u:
+						if NEXT_UPGRADE < 6:
+							upgrade_gun()
+						FUSION = FUSION - UPGRADE_GUN_MIN
+				if FUSION >= ADD_GUN_MIN:
+					if event.key == pygame.K_p:
+						if len(POSITIONS) < 6:
+							add_gun()
+						FUSION = FUSION - ADD_GUN_MIN
 			if event.type == pygame.QUIT:
 				QUITGAME = True
 		
 		pygame.display.flip()
+
+
 def how_to_play():
 	how_to_play = True
 	while how_to_play:
@@ -822,20 +684,24 @@ def how_to_play():
 		pygame.display.flip()
 def game_over():
 	game_over = True
+	global QUITGAME
 	while game_over:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				game_over = False
-	screen.blit(game_over_img, [0,0])
-	score_total = scoreFont.render(str((FUSION * 10) + SCORE), True, (255,255,255))
-	screen.blit(score_total, (670, 565))
-	pygame.display.flip()
+				QUITGAME = True
+		screen.blit(game_over_img, [0,0])
+		score_total = scoreFont.render(str((FUSION * 10) + SCORE), True, (255,255,255))
+		screen.blit(score_total, (670, 565))
+		pygame.display.flip()
 def intro_loop():
 	intro =  True
+	global QUITGAME
 	while intro:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				intro = False
+				QUITGAME = True
 			elif event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_SPACE:
 					intro = False
@@ -845,16 +711,16 @@ def intro_loop():
 		screen.blit(intro_img, [0,0])
 		pygame.display.flip()
 def fire_bullets():
-	global ANGLE1, ANGLE2, ANGLE4, ANGLE5, ANGLE6
-	if GUN1:
+	global ANGLE1, ANGLE2, ANGLE4, ANGLE5, ANGLE6, GUNS_ACTIVE
+	if GUNS_ACTIVE[1]:
 		add_bullet(Bullet1, ANGLE1, bullet1_group)
-	if GUN2:
+	if GUNS_ACTIVE[2]:
 		add_bullet(Bullet2, ANGLE2, bullet2_group)
-	if GUN4:
+	if GUNS_ACTIVE[3]:
 		add_bullet(Bullet4, ANGLE4, bullet4_group)
-	if GUN5:
+	if GUNS_ACTIVE[4]:
 		add_bullet(Bullet5, ANGLE5, bullet5_group)
-	if GUN6:
+	if GUNS_ACTIVE[5]:
 		add_bullet(Bullet6, ANGLE6, bullet6_group)
 def add_bullet(Type, angle, type_group):
 	bullet_sprite = Type()
@@ -863,7 +729,46 @@ def add_bullet(Type, angle, type_group):
 	all_bullets.add(bullet_sprite)
 	if type_group != user_bullets:
 		computer_bullets.add(bullet_sprite)
-
+def add_gun():
+	global POSITIONS, GUN_POSITIONS, GUNS_ACTIVE
+	i = random.randint(1, 5)
+	while i in POSITIONS:
+		i = random.randint(1, 5)
+	POSITIONS.append(i)
+	gun_sprite = Gun(GUN_POSITIONS[i][0], GUN_POSITIONS[i][1])
+	gun_group.add(gun_sprite)
+	GUNS_ACTIVE[i] = True
+	add_barrel(i)
+def upgrade_gun():
+	global NEXT_UPGRADE, GUNS_UPGRADED
+	all_guns = list(gun_group.sprites())
+	all_guns[NEXT_UPGRADE].upgrade()
+	# print("Iterator groing through Positions: ", NEXT_UPGRADE)
+	# print("Positions array: ", POSITIONS)
+	# print("Gun to be upgraded next: ", POSITIONS[NEXT_UPGRADE])
+	GUNS_UPGRADED[POSITIONS[NEXT_UPGRADE]] = True
+	# print("Status of guns:")
+	# print("Guns Active:", GUNS_ACTIVE)
+	# print("Guns Upgraded: ", GUNS_UPGRADED)
+	NEXT_UPGRADE += 1
+def add_barrel(i):
+	global BARRELS
+	barrel_sprite = Barrel(BARRELS[i][0], BARRELS[i][1], BARRELS[i][2], BARRELS[i][3])
+	barrel_group.add(barrel_sprite)
 intro_loop()
 game_loop()
 game_over()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
