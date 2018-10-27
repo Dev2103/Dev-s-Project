@@ -18,7 +18,7 @@ DELAY = 0
 READY = False
 FUSION = 0
 
-GUN_POSITIONS = [(580, 730), (27,730), (315,753), (780,753), (960,730), (1180, 730)]
+GUN_POSITIONS = [(580, 730), (27, 730), (315, 753), (780,753), (960,730), (1180, 730)]
 GUNS_ACTIVE = [True, False, False, False, False, False]
 GUNS_UPGRADED = [False, False, False, False, False, False]
 
@@ -30,3 +30,8 @@ BARRELS = [(0,0,0,0), (65, 720, -60, 30), (353, 743, -60, 60), (818, 743, -60, 6
 
 ADD_GUN_MIN = 0
 UPGRADE_GUN_MIN = 0
+
+COMPUTER_HIT_SCORE = 25
+USER_HIT_SCORE = 50
+COMPUTER_HIT_FUSION = 1
+USER_HIT_FUSION = 2

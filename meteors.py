@@ -4,6 +4,8 @@ import math
 from global_vars import *
 from assets import *
 
+normal_hit = 1
+upgraded_hit = 2
 
 # Meteor Class Descriptions
 class Meteor1(pygame.sprite.Sprite):
@@ -14,7 +16,7 @@ class Meteor1(pygame.sprite.Sprite):
 		self.rect = self.image.get_rect()
 		self.rect.x = random.randrange(0, 1200)
 		self.rect.y = random.randrange(-1500, 0)
-		self.speed = 2
+		self.speed = 3
 		self.health = 2
 	def update(self):
 		self.rect.y = self.rect.y + self.speed
@@ -23,7 +25,10 @@ class Meteor1(pygame.sprite.Sprite):
 			self.rect.x = random.randrange(0, 1280)
 			self.rect.y = random.randrange(-2000, 0)
 	def hit(self):
-		self.health = self.health - 1
+		self.health = self.health - normal_hit
+		return self.health
+	def upgraded_hit(self):
+		self.health = self.health - upgraded_hit
 		return self.health
 	def check_y(self):
 		return self.rect.y
@@ -45,7 +50,10 @@ class Meteor2(pygame.sprite.Sprite):
 			self.rect.x = random.randrange(0, 1280)
 			self.rect.y = random.randrange(-3000,0)
 	def hit(self):
-		self.health = self.health - 1
+		self.health = self.health - normal_hit
+		return self.health
+	def upgraded_hit(self):
+		self.health = self.health - upgraded_hit
 		return self.health
 	def check_y(self):
 		return self.rect.y
@@ -67,7 +75,10 @@ class Meteor3(pygame.sprite.Sprite):
 			self.rect.x = random.randrange(0, 1280)
 			self.rect.y = random.randrange(-3000,0)
 	def hit(self):
-		self.health = self.health - 1
+		self.health = self.health - normal_hit
+		return self.health
+	def upgraded_hit(self):
+		self.health = self.health - upgraded_hit
 		return self.health
 	def check_y(self):
 		return self.rect.y
@@ -89,7 +100,10 @@ class Meteor4(pygame.sprite.Sprite):
 			self.rect.x = random.randrange(0, 1280)
 			self.rect.y = random.randrange(-3000,0)
 	def hit(self):
-		self.health = self.health - 1
+		self.health = self.health - normal_hit
+		return self.health
+	def upgraded_hit(self):
+		self.health = self.health - upgraded_hit
 		return self.health
 	def check_y(self):
 		return self.rect.y

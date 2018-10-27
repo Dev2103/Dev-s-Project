@@ -7,15 +7,10 @@ from global_vars import *
 from assets import *
 from meteors import *
 
-
-
-
 pygame.init()
 pygame.mixer.init()
 
-
 # Game Settings
-
 QUITGAME = False
 pygame.display.set_caption("Skyline Defence")
 clock = pygame.time.Clock()
@@ -35,7 +30,7 @@ cursor_img_rect = cursor_img.get_rect()
 all_buildings = pygame.sprite.Group()
 
 class Tall1(pygame.sprite.Sprite):
-	def __init__(self, x, y):
+	def __init__(self, x, y, number):
 		super().__init__() 
 		self.total_stages = 2
 		self.stages = [tall1d2, tall1d1, tall1]
@@ -45,6 +40,7 @@ class Tall1(pygame.sprite.Sprite):
 		self.originY = y
 		self.rect.x = self.originX
 		self.rect.y = self.originY
+		self.number = number
 	def destroy(self):
 		if (self.total_stages > 0):
 			self.total_stages = self.total_stages - 1
@@ -53,16 +49,18 @@ class Tall1(pygame.sprite.Sprite):
 		else:
 			self.image = pygame.Surface([0,0])
 			self.rect = self.image.get_rect(width=0, height=0)
+	def get_number(self):
+		return self.number
 tall1_group = pygame.sprite.Group()
-tall1_sprite1 = Tall1(322, 790)
-tall1_sprite2 = Tall1(787, 790)
+tall1_sprite1 = Tall1(322, 790, 2)
+tall1_sprite2 = Tall1(787, 790, 4)
 tall1_group.add(tall1_sprite1)
 tall1_group.add(tall1_sprite2)
 all_buildings.add(tall1_sprite1)
 all_buildings.add(tall1_sprite2)
 
 class Tall2(pygame.sprite.Sprite):
-	def __init__(self, x, y):
+	def __init__(self, x, y, number):
 		super().__init__()
 		self.total_stages = 2
 		self.stages = [tall2d2, tall2d1, tall2]
@@ -72,6 +70,7 @@ class Tall2(pygame.sprite.Sprite):
 		self.originY = y
 		self.rect.x = self.originX
 		self.rect.y = self.originY
+		self.number = number
 	def destroy(self):
 		if (self.total_stages > 0):
 			self.total_stages = self.total_stages - 1
@@ -80,16 +79,18 @@ class Tall2(pygame.sprite.Sprite):
 		else:
 			self.image = pygame.Surface([0,0])
 			self.rect = self.image.get_rect(width=0, height=0)
+	def get_number(self):
+		return self.number
 tall2_group = pygame.sprite.Group()
-tall2_sprite1 = Tall2(0 ,764)
-tall2_sprite2 = Tall2(935, 764)
+tall2_sprite1 = Tall2(0 ,764, 1)
+tall2_sprite2 = Tall2(935, 764, 5)
 tall2_group.add(tall2_sprite1)
 tall2_group.add(tall2_sprite2)
 all_buildings.add(tall2_sprite1)
 all_buildings.add(tall2_sprite2)
 
 class Tall3(pygame.sprite.Sprite):
-	def __init__(self, x, y):
+	def __init__(self, x, y, number):
 		super().__init__()
 		self.total_stages = 2
 		self.stages = [tall3d2, tall3d1, tall3]
@@ -99,6 +100,7 @@ class Tall3(pygame.sprite.Sprite):
 		self.originY = y
 		self.rect.x = self.originX
 		self.rect.y = self.originY
+		self.number = number
 	def destroy(self):
 		if (self.total_stages > 0):
 			self.total_stages = self.total_stages - 1
@@ -107,9 +109,11 @@ class Tall3(pygame.sprite.Sprite):
 		else:
 			self.image = pygame.Surface([0,0])
 			self.rect = self.image.get_rect(width=0, height=0)
+	def get_number(self):
+		return self.number
 tall3_group = pygame.sprite.Group()
-tall3_sprite1 = Tall3(560 ,764)
-tall3_sprite2 = Tall3(1160, 764)
+tall3_sprite1 = Tall3(560 ,764, 3)
+tall3_sprite2 = Tall3(1160, 764, 6)
 tall3_group.add(tall3_sprite1)
 tall3_group.add(tall3_sprite2)
 all_buildings.add(tall3_sprite1)
@@ -134,6 +138,8 @@ class Medium1(pygame.sprite.Sprite):
 		else:
 			self.image = pygame.Surface([0,0])
 			self.rect = self.image.get_rect(width=0, height=0)
+	def get_number(self):
+		return 0
 Medium1_group = pygame.sprite.Group()
 Medium1_sprite1 = Medium1(674, 820)
 Medium1_group.add(Medium1_sprite1)
@@ -158,6 +164,8 @@ class Medium2(pygame.sprite.Sprite):
 		else:
 			self.image = pygame.Surface([0,0])
 			self.rect = self.image.get_rect(width=0, height=0)
+	def get_number(self):
+		return 0
 Medium2_group = pygame.sprite.Group()
 Medium2_sprite1 = Medium2(120, 820)
 Medium2_sprite2 = Medium2(470, 820)
@@ -188,6 +196,8 @@ class Small1(pygame.sprite.Sprite):
 		else:
 			self.image = pygame.Surface([0,0])
 			self.rect = self.image.get_rect(width=0, height=0)
+	def get_number(self):
+		return 0
 small1_group = pygame.sprite.Group()
 small1_sprite1 = Small1(390, 890)
 small1_group.add(small1_sprite1)
@@ -212,6 +222,8 @@ class Small2(pygame.sprite.Sprite):
 		else:
 			self.image = pygame.Surface([0,0])
 			self.rect = self.image.get_rect(width=0, height=0)
+	def get_number(self):
+		return 0
 small2_group = pygame.sprite.Group()
 small2_sprite1 = Small2(854, 890)
 small2_group.add(small2_sprite1)
@@ -236,6 +248,8 @@ class Small3(pygame.sprite.Sprite):
 		else:
 			self.image = pygame.Surface([0,0])
 			self.rect = self.image.get_rect(width=0, height=0)
+	def get_number(self):
+		return 0
 small3_group = pygame.sprite.Group()
 small3_sprite1 = Small3(236, 860)
 small3_group.add(small3_sprite1)
@@ -245,7 +259,7 @@ all_buildings.add(small3_sprite1)
 
 # Guns class description
 class Gun(pygame.sprite.Sprite):
-	def __init__(self, x, y):
+	def __init__(self, x, y, number):
 		super().__init__()
 		self.image = pygame.Surface([80, 38])
 		self.image = gun1
@@ -255,14 +269,17 @@ class Gun(pygame.sprite.Sprite):
 		self.rect.x = self.originX
 		self.rect.y = self.originY
 		self.upgraded = False
+		self.number = number
 	def upgrade(self):
 		self.image = gun2
 		self.rect = self.image.get_rect(x=self.originX, y=self.originY)
 		self.upgraded = True
 	def upgrade_status(self):
 		return self.upgraded
+	def get_number(self):
+		return self.number
 gun_group =  pygame.sprite.Group()
-gun_sprite = Gun(580, 730)
+gun_sprite = Gun(580, 730, 0)
 gun_group.add(gun_sprite)
 
 barrel_group = pygame.sprite.Group()
@@ -359,9 +376,6 @@ class User_Bullet(pygame.sprite.Sprite):
 			self.kill()
 	def direction(self, angle):
 		self.angle = angle
-	
-user_bullets = pygame.sprite.Group()
-
 
 class Bullet1(pygame.sprite.Sprite):
 	def __init__(self):
@@ -382,8 +396,6 @@ class Bullet1(pygame.sprite.Sprite):
 	def direction(self, angle):
 		self.angle = angle
 
-bullet1_group = pygame.sprite.Group()
-
 class Bullet2(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
@@ -403,9 +415,6 @@ class Bullet2(pygame.sprite.Sprite):
 	def direction(self, angle):
 		self.angle = ANGLE2
 		
-bullet2_group = pygame.sprite.Group()
-
-
 class Bullet4(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
@@ -425,8 +434,6 @@ class Bullet4(pygame.sprite.Sprite):
 	def direction(self, angle):
 		self.angle = angle
 	
-bullet4_group = pygame.sprite.Group()
-
 class Bullet5(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
@@ -446,8 +453,6 @@ class Bullet5(pygame.sprite.Sprite):
 	def direction(self, angle):
 		self.angle = angle
 		
-bullet5_group = pygame.sprite.Group()
-
 class Bullet6(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
@@ -466,11 +471,34 @@ class Bullet6(pygame.sprite.Sprite):
 			self.kill()
 	def direction(self, angle):
 		self.angle = angle
-		
-bullet6_group = pygame.sprite.Group()
 
-all_bullets = pygame.sprite.Group()
+### Bullet Groups
+
+# User Bullets
+user_bullets = pygame.sprite.Group()
+# User Upgraded Bullets
+upgraded_user_bullets = pygame.sprite.Group()
+
+# Computer Bullets
+bullet1_group = pygame.sprite.Group()
+bullet2_group = pygame.sprite.Group()
+bullet4_group = pygame.sprite.Group()
+bullet5_group = pygame.sprite.Group()
+bullet6_group = pygame.sprite.Group()
+# All Computer Bullets 
 computer_bullets = pygame.sprite.Group()
+
+# Upgraded Computer Bullets
+upgraded_bullet1_group = pygame.sprite.Group()
+upgraded_bullet2_group = pygame.sprite.Group()
+upgraded_bullet4_group = pygame.sprite.Group()
+upgraded_bullet5_group = pygame.sprite.Group()
+upgraded_bullet6_group = pygame.sprite.Group()
+#All Upgraded Computer Bullets
+upgraded_computer_bullets = pygame.sprite.Group()
+
+# All Bullets
+all_bullets = pygame.sprite.Group()
 
 def game_loop():
 	global QUITGAME, SCORE, FIRED, DELAY, READY, shot, FUSION
@@ -490,10 +518,12 @@ def game_loop():
 		timerText = timerFont.render("Time: " + str(timer), True, (255,255,255))
 		screen.blit(timerText, (10,10))
 		
+		# Score Display
 		score = "{:06d}".format(SCORE)
 		scoreText = scoreFont.render("Score: " + str(score), True, (255,255,255))
 		screen.blit(scoreText, (10, 40))
 
+		# Fusion Display
 		fusionQ = "{:01d}".format(FUSION)
 		fusionText = scoreFont.render(str(fusionQ), True, (255,255,255))
 		screen.blit(fusionText, (1160,30))
@@ -512,15 +542,18 @@ def game_loop():
 			meteor4_group.update()
 			meteor4_group.draw(screen)
 		
+		# Building Placement
 		all_buildings.draw(screen)
 		
 		# User Bullets
 		user_bullets.draw(screen)
 		user_bullets.update()
+		upgraded_user_bullets.draw(screen)
+		upgraded_user_bullets.update()
 
 		# Computer Bullets
 		if READY and not FIRED:
-			fire_bullets()
+			# fire_bullets()
 			FIRED = True
 			READY = False
 		elif not READY:
@@ -530,47 +563,52 @@ def game_loop():
 		if DELAY >= 30:
 			READY = True
 			DELAY = 0
-		
 		computer_bullets.draw(screen)
 		computer_bullets.update()
+		upgraded_computer_bullets.draw(screen)
+		upgraded_computer_bullets.update()
 
 		# Guns and Barrels		
 		barrel_group.clear(screen, background)
 		barrel_group.update()
 		barrel_group.draw(screen)
-
 		gun_group.draw(screen)
 
-		#coin
+		# Fusion Core Image
 		screen.blit(fusion ,[1120, 20])
 
-		#buttons
-		screen.blit(upgrade_faded, [20,780])
-		screen.blit(upgrade, [20,780])
-
-		screen.blit(upgrade_faded, [580,780])
-		screen.blit(upgrade, [580,780])
-
-		screen.blit(upgrade_faded, [955,780])
-		screen.blit(upgrade, [955,780])
-
-		screen.blit(upgrade_faded, [1180,780])
-		screen.blit(upgrade, [1180,780])
-
-		screen.blit(upgrade_faded, [330,805])
-		screen.blit(upgrade, [330,805])
-
-		screen.blit(upgrade_faded, [795,805])
-		screen.blit(upgrade, [795,805])
-
+		# Cursor Image
 		screen.blit(cursor_img, cursor_img_rect)
 
+		# Gun-Meteor Collesion Detection
+		gun_meteor_collision = pygame.sprite.groupcollide(all_meteors_group, gun_group, True, False)
+
+		if gun_meteor_collision:
+			gun_hit = list(gun_meteor_collision.values())[0].pop()
+			destroy_defense(gun_hit)
 
 		# Building-Meteor Collision Detection
 		building_collision = pygame.sprite.groupcollide(all_meteors_group, all_buildings, False, False)
 		if building_collision:
 			building_hit = list(building_collision.values())[0].pop()
 			building_hit.destroy()
+			building = building_hit.get_number()
+			if building == 1 or building == 2:
+				gun_to_destroy = building
+			elif building == 3:
+				gun_to_destroy = 0
+			elif building == 4 or building == 5 or building == 6:
+				gun_to_destroy = building - 1
+			else:
+				gun_to_destroy = -1
+			if gun_to_destroy != -1 and GUNS_ACTIVE[gun_to_destroy] == True:
+				all_guns = list(gun_group.sprites())
+				if len(all_guns) > 0:
+					gun_hit = all_guns[0]
+					for g in range(0,len(all_guns)):
+						if all_guns[g].get_number() == gun_to_destroy:
+							gun_hit = all_guns[g]
+					destroy_defense(gun_hit)
 			meteor_hit = list(building_collision.keys())[0]
 			if meteor1_group.has(meteor_hit):
 				meteor_hit.kill()
@@ -587,57 +625,117 @@ def game_loop():
 
 		# Bullet-Meteor Collision Detection
 		user_meteor_collision = pygame.sprite.groupcollide(user_bullets, all_meteors_group, True, False)
+		upgraded_user_meteor_collision = pygame.sprite.groupcollide(upgraded_user_bullets, all_meteors_group, True, False)
 		computer_meteor_collision = pygame.sprite.groupcollide(computer_bullets, all_meteors_group, True, False)
+		upgraded_computer_meteor_collision = pygame.sprite.groupcollide(upgraded_computer_bullets, all_meteors_group, True, False)
 
+		# Meteor Collision with User Bullets
 		if user_meteor_collision:
 			meteor_hit = list(user_meteor_collision.values())[0].pop()
 			health_after_hit = meteor_hit.hit()
 			if health_after_hit == 0:
 				if meteor1_group.has(meteor_hit):
-					updated_score = SCORE + 100
-					updated_fusion = FUSION + 2
+					updated_score = SCORE + (2*USER_HIT_SCORE)
+					updated_fusion = FUSION + (1*USER_HIT_FUSION)
 					meteor_hit.kill()
 					add_meteor(Meteor1, meteor1_group)
 				elif meteor2_group.has(meteor_hit):
-					updated_score = SCORE + 200
-					updated_fusion = FUSION + 4
+					updated_score = SCORE + (4*USER_HIT_SCORE)
+					updated_fusion = FUSION + (2*USER_HIT_FUSION)
 					meteor_hit.kill()
 					add_meteor(Meteor2, meteor2_group)
 				elif meteor3_group.has(meteor_hit):
-					updated_score = SCORE + 250
-					updated_fusion = FUSION + 6
+					updated_score = SCORE + (5*USER_HIT_SCORE)
+					updated_fusion = FUSION + (3*USER_HIT_FUSION)
 					meteor_hit.kill()
 					add_meteor(Meteor3, meteor3_group)
 				elif meteor4_group.has(meteor_hit):
-					updated_score = SCORE + 400
-					updated_fusion = FUSION + 8
+					updated_score = SCORE + (8*USER_HIT_SCORE)
+					updated_fusion = FUSION + (4*USER_HIT_FUSION)
 					meteor_hit.kill()
 					add_meteor(Meteor4, meteor4_group)
 				SCORE = updated_score
 				FUSION = updated_fusion
 
+		# Meteor Collision with Upgraded User Bullets
+		if upgraded_user_meteor_collision:
+			meteor_hit = list(upgraded_user_meteor_collision.values())[0].pop()
+			health_after_hit = meteor_hit.upgraded_hit()
+			if health_after_hit <= 0:
+				if meteor1_group.has(meteor_hit):
+					updated_score = SCORE + (4*USER_HIT_SCORE)
+					updated_fusion = FUSION + (2*USER_HIT_FUSION)
+					meteor_hit.kill()
+					add_meteor(Meteor1, meteor1_group)
+				elif meteor2_group.has(meteor_hit):
+					updated_score = SCORE + (8*USER_HIT_SCORE)
+					updated_fusion = FUSION + (4*USER_HIT_FUSION)
+					meteor_hit.kill()
+					add_meteor(Meteor2, meteor2_group)
+				elif meteor3_group.has(meteor_hit):
+					updated_score = SCORE + (10*USER_HIT_SCORE)
+					updated_fusion = FUSION + (6*USER_HIT_FUSION)
+					meteor_hit.kill()
+					add_meteor(Meteor3, meteor3_group)
+				elif meteor4_group.has(meteor_hit):
+					updated_score = SCORE + (16*USER_HIT_SCORE)
+					updated_fusion = FUSION + (8*USER_HIT_FUSION)
+					meteor_hit.kill()
+					add_meteor(Meteor4, meteor4_group)
+				SCORE = updated_score
+				FUSION = updated_fusion
+
+		# Meteor Collision with Computer Bullets
 		if computer_meteor_collision:
 			meteor_hit = list(computer_meteor_collision.values())[0].pop()
 			health_after_hit = meteor_hit.hit()
 			if health_after_hit == 0:
 				if meteor1_group.has(meteor_hit):
-					updated_score = SCORE + 50
-					updated_fusion = FUSION + 1
+					updated_score = SCORE + (2*COMPUTER_HIT_SCORE)
+					updated_fusion = FUSION + (1*COMPUTER_HIT_FUSION)
 					meteor_hit.kill()
 					add_meteor(Meteor1, meteor1_group)
 				elif meteor2_group.has(meteor_hit):
-					updated_score = SCORE + 100
-					updated_fusion = FUSION + 2
+					updated_score = SCORE + (4*COMPUTER_HIT_SCORE)
+					updated_fusion = FUSION + (2*COMPUTER_HIT_FUSION)
 					meteor_hit.kill()
 					add_meteor(Meteor2, meteor2_group)
 				elif meteor3_group.has(meteor_hit):
-					updated_score = SCORE + 125
-					updated_fusion = FUSION + 3
+					updated_score = SCORE + (5*COMPUTER_HIT_SCORE)
+					updated_fusion = FUSION + (3*COMPUTER_HIT_FUSION)
 					meteor_hit.kill()
 					add_meteor(Meteor3, meteor3_group)
 				elif meteor4_group.has(meteor_hit):
-					updated_score = SCORE + 200
-					updated_fusion = FUSION + 4
+					updated_score = SCORE + (8*COMPUTER_HIT_SCORE)
+					updated_fusion = FUSION + (4*COMPUTER_HIT_FUSION)
+					meteor_hit.kill()
+					add_meteor(Meteor4, meteor4_group)
+				SCORE = updated_score
+				FUSION = updated_fusion
+
+		# Meteor Collision with Upgraded Computer Bullets
+		if upgraded_computer_meteor_collision:
+			meteor_hit = list(upgraded_computer_meteor_collision.values())[0].pop()
+			health_after_hit = meteor_hit.upgraded_hit()
+			if health_after_hit <= 0:
+				if meteor1_group.has(meteor_hit):
+					updated_score = SCORE + (4*COMPUTER_HIT_SCORE)
+					updated_fusion = FUSION + (2*COMPUTER_HIT_FUSION)
+					meteor_hit.kill()
+					add_meteor(Meteor1, meteor1_group)
+				elif meteor2_group.has(meteor_hit):
+					updated_score = SCORE + (8*COMPUTER_HIT_SCORE)
+					updated_fusion = FUSION + (4*COMPUTER_HIT_FUSION)
+					meteor_hit.kill()
+					add_meteor(Meteor2, meteor2_group)
+				elif meteor3_group.has(meteor_hit):
+					updated_score = SCORE + (10*COMPUTER_HIT_SCORE)
+					updated_fusion = FUSION + (6*COMPUTER_HIT_FUSION)
+					meteor_hit.kill()
+					add_meteor(Meteor3, meteor3_group)
+				elif meteor4_group.has(meteor_hit):
+					updated_score = SCORE + (16*COMPUTER_HIT_SCORE)
+					updated_fusion = FUSION + (8*COMPUTER_HIT_FUSION)
 					meteor_hit.kill()
 					add_meteor(Meteor4, meteor4_group)
 				SCORE = updated_score
@@ -650,21 +748,29 @@ def game_loop():
 		if pressed_key[pygame.K_RIGHT]:
 			user_barrel_sprite.turn_right()	
 		
+		# User Interaction Controls
 		for event in pygame.event.get():
 			if event.type == pygame.KEYDOWN:
+				# User Fire Bullets
 				if event.key == pygame.K_SPACE:
 					if len(user_bullets) <= 5:
-						add_bullet(User_Bullet, USERANGLE, user_bullets)
+						if GUNS_UPGRADED[0]:
+							add_bullet(User_Bullet, USERANGLE, upgraded_user_bullets, True)	
+						else:
+							add_bullet(User_Bullet, USERANGLE, user_bullets, False)
+				# Upgrade Guns
 				if FUSION >= UPGRADE_GUN_MIN:
 					if event.key == pygame.K_u:
 						if NEXT_UPGRADE < 6:
 							upgrade_gun()
 						FUSION = FUSION - UPGRADE_GUN_MIN
+				# Add Guns
 				if FUSION >= ADD_GUN_MIN:
 					if event.key == pygame.K_p:
 						if len(POSITIONS) < 6:
 							add_gun()
 						FUSION = FUSION - ADD_GUN_MIN
+			# Quit Game
 			if event.type == pygame.QUIT:
 				QUITGAME = True
 		
@@ -713,29 +819,47 @@ def intro_loop():
 def fire_bullets():
 	global ANGLE1, ANGLE2, ANGLE4, ANGLE5, ANGLE6, GUNS_ACTIVE
 	if GUNS_ACTIVE[1]:
-		add_bullet(Bullet1, ANGLE1, bullet1_group)
+		if GUNS_UPGRADED[1]:
+			add_bullet(Bullet1, ANGLE1, upgraded_bullet1_group, True)
+		else:
+			add_bullet(Bullet1, ANGLE1, bullet1_group, False)
 	if GUNS_ACTIVE[2]:
-		add_bullet(Bullet2, ANGLE2, bullet2_group)
+		if GUNS_UPGRADED[2]:
+			add_bullet(Bullet2, ANGLE2, upgraded_bullet2_group, True)
+		else:
+			add_bullet(Bullet2, ANGLE2, bullet2_group, False)
 	if GUNS_ACTIVE[3]:
-		add_bullet(Bullet4, ANGLE4, bullet4_group)
+		if GUNS_UPGRADED[3]:
+			add_bullet(Bullet4, ANGLE4, upgraded_bullet4_group, True)
+		else:
+			add_bullet(Bullet4, ANGLE4, bullet4_group, False)
 	if GUNS_ACTIVE[4]:
-		add_bullet(Bullet5, ANGLE5, bullet5_group)
+		if GUNS_UPGRADED[4]:
+			add_bullet(Bullet5, ANGLE5, upgraded_bullet5_group, True)
+		else:
+			add_bullet(Bullet5, ANGLE5, bullet5_group, False)
 	if GUNS_ACTIVE[5]:
-		add_bullet(Bullet6, ANGLE6, bullet6_group)
-def add_bullet(Type, angle, type_group):
+		if GUNS_UPGRADED[5]:
+			add_bullet(Bullet6, ANGLE6, upgraded_bullet6_group, True)
+		else:
+			add_bullet(Bullet6, ANGLE6, bullet6_group, False)
+def add_bullet(Type, angle, type_group, upgraded):
 	bullet_sprite = Type()
 	bullet_sprite.direction(angle)
 	type_group.add(bullet_sprite)
 	all_bullets.add(bullet_sprite)
-	if type_group != user_bullets:
-		computer_bullets.add(bullet_sprite)
+	if type_group != user_bullets and type_group != upgraded_user_bullets:
+		if upgraded == True:
+			upgraded_computer_bullets.add(bullet_sprite)
+		else:
+			computer_bullets.add(bullet_sprite)	
 def add_gun():
 	global POSITIONS, GUN_POSITIONS, GUNS_ACTIVE
 	i = random.randint(1, 5)
 	while i in POSITIONS:
 		i = random.randint(1, 5)
 	POSITIONS.append(i)
-	gun_sprite = Gun(GUN_POSITIONS[i][0], GUN_POSITIONS[i][1])
+	gun_sprite = Gun(GUN_POSITIONS[i][0], GUN_POSITIONS[i][1], i)
 	gun_group.add(gun_sprite)
 	GUNS_ACTIVE[i] = True
 	add_barrel(i)
@@ -755,9 +879,32 @@ def add_barrel(i):
 	global BARRELS
 	barrel_sprite = Barrel(BARRELS[i][0], BARRELS[i][1], BARRELS[i][2], BARRELS[i][3])
 	barrel_group.add(barrel_sprite)
+def destroy_defense(gun_hit):
+	all_guns = list(gun_group.sprites())
+	all_barrels = list(barrel_group.sprites())
+	gun = all_guns.index(gun_hit)
+	GUNS_ACTIVE[POSITIONS[gun]] = False
+	all_guns[gun].kill()
+	all_barrels[gun].kill()
 intro_loop()
 game_loop()
 game_over()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
