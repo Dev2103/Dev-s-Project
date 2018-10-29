@@ -6,12 +6,13 @@ import sys
 from global_vars import *
 from assets import *
 from meteors import *
+from skyline import *
+from guns import *
 
 pygame.init()
 pygame.mixer.init()
 
 # Game Settings
-QUITGAME = False
 pygame.display.set_caption("Skyline Defence")
 clock = pygame.time.Clock()
 timerFont = pygame.font.Font(None, 36)
@@ -20,490 +21,15 @@ pygame.mouse.set_visible(False)
 cursor_img = pygame.transform.scale(pygame.image.load("img/cursor.png") , [12 , 20])
 cursor_img_rect = cursor_img.get_rect()
 
-
 # Background Music 
-# pygame.mixer.music.load("music/musicbg.mp3")
-# pygame.mixer.music.play(-1, 0.0)
-
-# Building Class Descriptions
-
-all_buildings = pygame.sprite.Group()
-
-class Tall1(pygame.sprite.Sprite):
-	def __init__(self, x, y, number):
-		super().__init__() 
-		self.total_stages = 2
-		self.stages = [tall1d2, tall1d1, tall1]
-		self.image = self.stages[self.total_stages]
-		self.rect = self.image.get_rect()
-		self.originX = x
-		self.originY = y
-		self.rect.x = self.originX
-		self.rect.y = self.originY
-		self.number = number
-	def destroy(self):
-		if (self.total_stages > 0):
-			self.total_stages = self.total_stages - 1
-			self.image = self.stages[self.total_stages]
-			self.rect = self.image.get_rect(x=self.originX, y=self.originY)
-		else:
-			self.image = pygame.Surface([0,0])
-			self.rect = self.image.get_rect(width=0, height=0)
-	def get_number(self):
-		return self.number
-tall1_group = pygame.sprite.Group()
-tall1_sprite1 = Tall1(322, 790, 2)
-tall1_sprite2 = Tall1(787, 790, 4)
-tall1_group.add(tall1_sprite1)
-tall1_group.add(tall1_sprite2)
-all_buildings.add(tall1_sprite1)
-all_buildings.add(tall1_sprite2)
-
-class Tall2(pygame.sprite.Sprite):
-	def __init__(self, x, y, number):
-		super().__init__()
-		self.total_stages = 2
-		self.stages = [tall2d2, tall2d1, tall2]
-		self.image = self.stages[self.total_stages]
-		self.rect = self.image.get_rect()
-		self.originX = x
-		self.originY = y
-		self.rect.x = self.originX
-		self.rect.y = self.originY
-		self.number = number
-	def destroy(self):
-		if (self.total_stages > 0):
-			self.total_stages = self.total_stages - 1
-			self.image = self.stages[self.total_stages]
-			self.rect = self.image.get_rect(x=self.originX, y=self.originY)
-		else:
-			self.image = pygame.Surface([0,0])
-			self.rect = self.image.get_rect(width=0, height=0)
-	def get_number(self):
-		return self.number
-tall2_group = pygame.sprite.Group()
-tall2_sprite1 = Tall2(0 ,764, 1)
-tall2_sprite2 = Tall2(935, 764, 5)
-tall2_group.add(tall2_sprite1)
-tall2_group.add(tall2_sprite2)
-all_buildings.add(tall2_sprite1)
-all_buildings.add(tall2_sprite2)
-
-class Tall3(pygame.sprite.Sprite):
-	def __init__(self, x, y, number):
-		super().__init__()
-		self.total_stages = 2
-		self.stages = [tall3d2, tall3d1, tall3]
-		self.image = self.stages[self.total_stages]
-		self.rect = self.image.get_rect()
-		self.originX = x
-		self.originY = y
-		self.rect.x = self.originX
-		self.rect.y = self.originY
-		self.number = number
-	def destroy(self):
-		if (self.total_stages > 0):
-			self.total_stages = self.total_stages - 1
-			self.image = self.stages[self.total_stages]
-			self.rect = self.image.get_rect(x=self.originX, y=self.originY)
-		else:
-			self.image = pygame.Surface([0,0])
-			self.rect = self.image.get_rect(width=0, height=0)
-	def get_number(self):
-		return self.number
-tall3_group = pygame.sprite.Group()
-tall3_sprite1 = Tall3(560 ,764, 3)
-tall3_sprite2 = Tall3(1160, 764, 6)
-tall3_group.add(tall3_sprite1)
-tall3_group.add(tall3_sprite2)
-all_buildings.add(tall3_sprite1)
-all_buildings.add(tall3_sprite2)
-
-class Medium1(pygame.sprite.Sprite):
-	def __init__(self, x, y):
-		super().__init__()
-		self.total_stages = 2
-		self.stages = [medium1d2, medium1d1, medium1]
-		self.image = self.stages[self.total_stages]
-		self.rect = self.image.get_rect()
-		self.originX = x
-		self.originY = y
-		self.rect.x = self.originX
-		self.rect.y = self.originY
-	def destroy(self):
-		if (self.total_stages > 0):
-			self.total_stages = self.total_stages - 1
-			self.image = self.stages[self.total_stages]
-			self.rect = self.image.get_rect(x=self.originX, y=self.originY)
-		else:
-			self.image = pygame.Surface([0,0])
-			self.rect = self.image.get_rect(width=0, height=0)
-	def get_number(self):
-		return 0
-Medium1_group = pygame.sprite.Group()
-Medium1_sprite1 = Medium1(674, 820)
-Medium1_group.add(Medium1_sprite1)
-all_buildings.add(Medium1_sprite1)
-
-class Medium2(pygame.sprite.Sprite):
-	def __init__(self, x, y):
-		super().__init__()
-		self.total_stages = 2
-		self.stages = [medium2d2, medium2d1, medium2]
-		self.image = self.stages[self.total_stages]
-		self.rect = self.image.get_rect()
-		self.originX = x
-		self.originY = y
-		self.rect.x = self.originX
-		self.rect.y = self.originY
-	def destroy(self):
-		if (self.total_stages > 0):
-			self.total_stages = self.total_stages - 1
-			self.image = self.stages[self.total_stages]
-			self.rect = self.image.get_rect(x=self.originX, y=self.originY)
-		else:
-			self.image = pygame.Surface([0,0])
-			self.rect = self.image.get_rect(width=0, height=0)
-	def get_number(self):
-		return 0
-Medium2_group = pygame.sprite.Group()
-Medium2_sprite1 = Medium2(120, 820)
-Medium2_sprite2 = Medium2(470, 820)
-Medium2_sprite3 = Medium2(1050, 820)
-Medium2_group.add(Medium2_sprite1)
-Medium2_group.add(Medium2_sprite2)
-Medium2_group.add(Medium2_sprite3)
-all_buildings.add(Medium2_sprite1)
-all_buildings.add(Medium2_sprite2)
-all_buildings.add(Medium2_sprite3)
-
-class Small1(pygame.sprite.Sprite):
-	def __init__(self, x, y):
-		super().__init__()
-		self.total_stages = 1
-		self.stages = [small1d1, small1]
-		self.image = self.stages[self.total_stages]
-		self.rect = self.image.get_rect()
-		self.originX = x
-		self.originY = y
-		self.rect.x = self.originX
-		self.rect.y = self.originY
-	def destroy(self):
-		if (self.total_stages > 0):
-			self.total_stages = self.total_stages - 1
-			self.image = self.stages[self.total_stages]
-			self.rect = self.image.get_rect(x=self.originX, y=self.originY)
-		else:
-			self.image = pygame.Surface([0,0])
-			self.rect = self.image.get_rect(width=0, height=0)
-	def get_number(self):
-		return 0
-small1_group = pygame.sprite.Group()
-small1_sprite1 = Small1(390, 890)
-small1_group.add(small1_sprite1)
-all_buildings.add(small1_sprite1)
-
-class Small2(pygame.sprite.Sprite):
-	def __init__(self, x, y):
-		super().__init__()
-		self.total_stages = 1
-		self.stages = [small2d1, small2]
-		self.image = self.stages[self.total_stages]
-		self.rect = self.image.get_rect()
-		self.originX = x
-		self.originY = y
-		self.rect.x = self.originX
-		self.rect.y = self.originY
-	def destroy(self):
-		if (self.total_stages > 0):
-			self.total_stages = self.total_stages - 1
-			self.image = self.stages[self.total_stages]
-			self.rect = self.image.get_rect(x=self.originX, y=self.originY)
-		else:
-			self.image = pygame.Surface([0,0])
-			self.rect = self.image.get_rect(width=0, height=0)
-	def get_number(self):
-		return 0
-small2_group = pygame.sprite.Group()
-small2_sprite1 = Small2(854, 890)
-small2_group.add(small2_sprite1)
-all_buildings.add(small2_sprite1)
-
-class Small3(pygame.sprite.Sprite):
-	def __init__(self, x, y):
-		super().__init__()
-		self.total_stages = 1
-		self.stages = [small3d1, small3]
-		self.image = self.stages[self.total_stages]
-		self.rect = self.image.get_rect()
-		self.originX = x
-		self.originY = y
-		self.rect.x = self.originX
-		self.rect.y = self.originY
-	def destroy(self):
-		if (self.total_stages > 0):
-			self.total_stages = self.total_stages - 1
-			self.image = self.stages[self.total_stages]
-			self.rect = self.image.get_rect(x=self.originX, y=self.originY)
-		else:
-			self.image = pygame.Surface([0,0])
-			self.rect = self.image.get_rect(width=0, height=0)
-	def get_number(self):
-		return 0
-small3_group = pygame.sprite.Group()
-small3_sprite1 = Small3(236, 860)
-small3_group.add(small3_sprite1)
-all_buildings.add(small3_sprite1)
-
-
-
-# Guns class description
-class Gun(pygame.sprite.Sprite):
-	def __init__(self, x, y, number):
-		super().__init__()
-		self.image = pygame.Surface([80, 38])
-		self.image = gun1
-		self.rect  = self.image.get_rect()
-		self.originX = x
-		self.originY = y
-		self.rect.x = self.originX
-		self.rect.y = self.originY
-		self.upgraded = False
-		self.number = number
-	def upgrade(self):
-		self.image = gun2
-		self.rect = self.image.get_rect(x=self.originX, y=self.originY)
-		self.upgraded = True
-	def upgrade_status(self):
-		return self.upgraded
-	def get_number(self):
-		return self.number
-gun_group =  pygame.sprite.Group()
-gun_sprite = Gun(580, 730, 0)
-gun_group.add(gun_sprite)
-
-barrel_group = pygame.sprite.Group()
-
-# User Barrel
-class User_barrel(pygame.sprite.Sprite):
-	def __init__(self):
-		super().__init__()
-		self.imageMaster = barrel
-		self.image = self.imageMaster
-		self.rect = self.image.get_rect()
-		self.rect.x = 618
-		self.rect.y = 720
-		self.angle = 0
-		self.dir = 2
-		centerX = 620
-		centerY = 733
-		self.rect.center = (centerX, centerY)
-	def update(self):
-		oldCenter = self.rect.center
-		self.image = pygame.transform.rotate(self.imageMaster, (-self.angle))
-		self.rect = self.image.get_rect()
-		self.rect.center = oldCenter
-	def turn_right(self):
-		global USERANGLE, ANGLE_R_LIMIT
-		if self.angle <= ANGLE_R_LIMIT:
-			self.angle = self.angle + self.dir
-			USERANGLE = self.angle
-	def turn_left(self):
-		global USERANGLE, ANGLE_L_LIMIT
-		if self.angle >= ANGLE_L_LIMIT:
-			self.angle = self.angle - self.dir
-			USERANGLE = self.angle
-
-user_barrel_sprite = User_barrel()
-barrel_group.add(user_barrel_sprite)
-
-# Computer Barrels
-class Barrel(pygame.sprite.Sprite):
-	def __init__(self, x, y, left, right):
-		super().__init__()
-		self.imageMaster = barrel
-		self.image = self.imageMaster
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
-		self.originX = x
-		self.left_limit = left
-		self.right_limit = right
-		self.angle = 0
-		self.dir = 5
-		centerX = x + 2
-		centerY = y + 13
-		self.rect.center = (centerX, centerY)
-	def update(self):
-		global ANGLE1, ANGLE2, ANGLE4, ANGLE5, ANGLE6
-		self.angle = self.angle + self.dir
-		if self.angle >= self.right_limit:
-			self.dir = -1
-		elif self.angle <= self.left_limit:
-			self.dir = 1
-		if self.originX == 65:
-			ANGLE1 = 0 - self.angle
-		elif self.originX == 353:
-			ANGLE2 = 0 - self.angle
-		elif self.originX == 818:
-			ANGLE4 = 0 - self.angle
-		elif self.originX == 998:
-			ANGLE5 = 0 - self.angle
-		elif self.originX == 1218:
-			ANGLE6 = 0 - self.angle
-		oldCenter = self.rect.center
-		self.image = pygame.transform.rotate(self.imageMaster, self.angle)
-		self.rect = self.image.get_rect()
-		self.rect.center = oldCenter
-
-# Bullet Main
-class User_Bullet(pygame.sprite.Sprite):
-	def __init__(self):
-		super().__init__()
-		self.image = pygame.Surface([5, 5])
-		self.image.fill(SILVER)
-		self.rect = self.image.get_rect()
-		self.rect.x = 620
-		self.rect.y = 733
-		self.originX = self.rect.x
-		self.originY = self.rect.y
-		self.angle = 0
-	def update(self):
-		self.rect.y = self.rect.y - 15
-		self.rect.x = self.rect.x + (15 * math.tan(math.radians(self.angle)))
-		
-		if self.rect.y <= 0:	
-			self.kill()
-	def direction(self, angle):
-		self.angle = angle
-
-class Bullet1(pygame.sprite.Sprite):
-	def __init__(self):
-		super().__init__()
-		self.image = pygame.Surface([5, 5])
-		self.image.fill(SILVER)
-		self.rect = self.image.get_rect()
-		self.rect.x = 65
-		self.rect.y = 733
-		self.originX = self.rect.x
-		self.originY = self.rect.y
-		self.angle = 0
-	def update(self):
-		self.rect.y = self.rect.y - 15
-		self.rect.x = self.rect.x + (15 * math.tan(math.radians(self.angle)))	
-		if self.rect.y <= 0:	
-			self.kill()
-	def direction(self, angle):
-		self.angle = angle
-
-class Bullet2(pygame.sprite.Sprite):
-	def __init__(self):
-		super().__init__()
-		self.image = pygame.Surface([5, 5])
-		self.image.fill(SILVER)
-		self.rect = self.image.get_rect()
-		self.rect.x = 353
-		self.rect.y = 750
-		self.originX = self.rect.x
-		self.originY = self.rect.y
-		self.angle = 0
-	def update(self):
-		self.rect.y = self.rect.y - 15
-		self.rect.x = self.rect.x + (15 * math.tan(math.radians(self.angle)))
-		if self.rect.y <= 0:	
-			self.kill()
-	def direction(self, angle):
-		self.angle = ANGLE2
-		
-class Bullet4(pygame.sprite.Sprite):
-	def __init__(self):
-		super().__init__()
-		self.image = pygame.Surface([5, 5])
-		self.image.fill(SILVER)
-		self.rect = self.image.get_rect()
-		self.rect.x = 818
-		self.rect.y = 750
-		self.originX = self.rect.x
-		self.originY = self.rect.y
-		self.angle = 0
-	def update(self):
-		self.rect.y = self.rect.y - 15
-		self.rect.x = self.rect.x + (15 * math.tan(math.radians(self.angle)))
-		if self.rect.y <= 0:	
-			self.kill()
-	def direction(self, angle):
-		self.angle = angle
-	
-class Bullet5(pygame.sprite.Sprite):
-	def __init__(self):
-		super().__init__()
-		self.image = pygame.Surface([5, 5])
-		self.image.fill(SILVER)
-		self.rect = self.image.get_rect()
-		self.rect.x = 998
-		self.rect.y = 733
-		self.originX = self.rect.x
-		self.originY = self.rect.y
-		self.angle = 0
-	def update(self):
-		self.rect.y = self.rect.y - 15
-		self.rect.x = self.rect.x + (15 * math.tan(math.radians(self.angle)))
-		if self.rect.y <= 0:	
-			self.kill()
-	def direction(self, angle):
-		self.angle = angle
-		
-class Bullet6(pygame.sprite.Sprite):
-	def __init__(self):
-		super().__init__()
-		self.image = pygame.Surface([5, 5])
-		self.image.fill(SILVER)
-		self.rect = self.image.get_rect()
-		self.rect.x = 1218
-		self.rect.y = 733
-		self.originX = self.rect.x
-		self.originY = self.rect.y
-		self.angle = 0
-	def update(self):
-		self.rect.y = self.rect.y - 15
-		self.rect.x = self.rect.x + (15 * math.tan(math.radians(self.angle)))		
-		if self.rect.y <= 0:	
-			self.kill()
-	def direction(self, angle):
-		self.angle = angle
-
-### Bullet Groups
-
-# User Bullets
-user_bullets = pygame.sprite.Group()
-# User Upgraded Bullets
-upgraded_user_bullets = pygame.sprite.Group()
-
-# Computer Bullets
-bullet1_group = pygame.sprite.Group()
-bullet2_group = pygame.sprite.Group()
-bullet4_group = pygame.sprite.Group()
-bullet5_group = pygame.sprite.Group()
-bullet6_group = pygame.sprite.Group()
-# All Computer Bullets 
-computer_bullets = pygame.sprite.Group()
-
-# Upgraded Computer Bullets
-upgraded_bullet1_group = pygame.sprite.Group()
-upgraded_bullet2_group = pygame.sprite.Group()
-upgraded_bullet4_group = pygame.sprite.Group()
-upgraded_bullet5_group = pygame.sprite.Group()
-upgraded_bullet6_group = pygame.sprite.Group()
-#All Upgraded Computer Bullets
-upgraded_computer_bullets = pygame.sprite.Group()
-
-# All Bullets
-all_bullets = pygame.sprite.Group()
+pygame.mixer.music.load("music/musicbg.mp3")
+pygame.mixer.music.play(-1, 0.0)
 
 def game_loop():
 	global QUITGAME, SCORE, FIRED, DELAY, READY, shot, FUSION
 	global no_Meteor1, no_Meteor2, no_Meteor3, no_Meteor4
 	global GUN1, GUN2, GUN4, GUN5, GUN6, UPGRADE_GUN_MIN, ADD_GUN_MIN
+	global BUILDINGS
 	while not QUITGAME:
 		# Background Refresh
 		screen.blit(background_img, [0,0])
@@ -553,7 +79,7 @@ def game_loop():
 
 		# Computer Bullets
 		if READY and not FIRED:
-			# fire_bullets()
+			fire_bullets()
 			FIRED = True
 			READY = False
 		elif not READY:
@@ -593,20 +119,14 @@ def game_loop():
 			building_hit = list(building_collision.values())[0].pop()
 			building_hit.destroy()
 			building = building_hit.get_number()
-			if building == 1 or building == 2:
-				gun_to_destroy = building
-			elif building == 3:
-				gun_to_destroy = 0
-			elif building == 4 or building == 5 or building == 6:
-				gun_to_destroy = building - 1
-			else:
-				gun_to_destroy = -1
-			if gun_to_destroy != -1 and GUNS_ACTIVE[gun_to_destroy] == True:
+			if building != -1:
+				buildings_with_guns.remove(building_hit)
+			if building != -1 and GUNS_ACTIVE[building] == True:
 				all_guns = list(gun_group.sprites())
 				if len(all_guns) > 0:
 					gun_hit = all_guns[0]
 					for g in range(0,len(all_guns)):
-						if all_guns[g].get_number() == gun_to_destroy:
+						if all_guns[g].get_number() == building:
 							gun_hit = all_guns[g]
 					destroy_defense(gun_hit)
 			meteor_hit = list(building_collision.keys())[0]
@@ -761,13 +281,13 @@ def game_loop():
 				# Upgrade Guns
 				if FUSION >= UPGRADE_GUN_MIN:
 					if event.key == pygame.K_u:
-						if NEXT_UPGRADE < 6:
+						if NEXT_UPGRADE < len(list(gun_group.sprites())):
 							upgrade_gun()
 						FUSION = FUSION - UPGRADE_GUN_MIN
 				# Add Guns
 				if FUSION >= ADD_GUN_MIN:
 					if event.key == pygame.K_p:
-						if len(POSITIONS) < 6:
+						if len(list(buildings_with_guns.sprites())) > 0:
 							add_gun()
 						FUSION = FUSION - ADD_GUN_MIN
 			# Quit Game
@@ -775,8 +295,6 @@ def game_loop():
 				QUITGAME = True
 		
 		pygame.display.flip()
-
-
 def how_to_play():
 	how_to_play = True
 	while how_to_play:
@@ -817,7 +335,6 @@ def intro_loop():
 		screen.blit(intro_img, [0,0])
 		pygame.display.flip()
 def fire_bullets():
-	global ANGLE1, ANGLE2, ANGLE4, ANGLE5, ANGLE6, GUNS_ACTIVE
 	if GUNS_ACTIVE[1]:
 		if GUNS_UPGRADED[1]:
 			add_bullet(Bullet1, ANGLE1, upgraded_bullet1_group, True)
@@ -854,68 +371,38 @@ def add_bullet(Type, angle, type_group, upgraded):
 		else:
 			computer_bullets.add(bullet_sprite)	
 def add_gun():
-	global POSITIONS, GUN_POSITIONS, GUNS_ACTIVE
-	i = random.randint(1, 5)
-	while i in POSITIONS:
-		i = random.randint(1, 5)
-	POSITIONS.append(i)
-	gun_sprite = Gun(GUN_POSITIONS[i][0], GUN_POSITIONS[i][1], i)
+	global POSITIONS, GUNS_ACTIVE
+	buildings = list(buildings_with_guns.sprites())
+	building = buildings[random.randrange(len(buildings))]
+	gun = building.get_number()
+	buildings_with_guns.remove(building)
+	POSITIONS.append(gun)
+	gun_sprite = Gun(GUN_POSITIONS[gun][0], GUN_POSITIONS[gun][1], gun)
 	gun_group.add(gun_sprite)
-	GUNS_ACTIVE[i] = True
-	add_barrel(i)
+	GUNS_ACTIVE[gun] = True
+	add_barrel(gun)
 def upgrade_gun():
 	global NEXT_UPGRADE, GUNS_UPGRADED
 	all_guns = list(gun_group.sprites())
 	all_guns[NEXT_UPGRADE].upgrade()
-	# print("Iterator groing through Positions: ", NEXT_UPGRADE)
-	# print("Positions array: ", POSITIONS)
-	# print("Gun to be upgraded next: ", POSITIONS[NEXT_UPGRADE])
 	GUNS_UPGRADED[POSITIONS[NEXT_UPGRADE]] = True
-	# print("Status of guns:")
-	# print("Guns Active:", GUNS_ACTIVE)
-	# print("Guns Upgraded: ", GUNS_UPGRADED)
 	NEXT_UPGRADE += 1
 def add_barrel(i):
 	global BARRELS
 	barrel_sprite = Barrel(BARRELS[i][0], BARRELS[i][1], BARRELS[i][2], BARRELS[i][3])
 	barrel_group.add(barrel_sprite)
 def destroy_defense(gun_hit):
+	global QUITGAME	
 	all_guns = list(gun_group.sprites())
 	all_barrels = list(barrel_group.sprites())
 	gun = all_guns.index(gun_hit)
-	GUNS_ACTIVE[POSITIONS[gun]] = False
-	all_guns[gun].kill()
-	all_barrels[gun].kill()
+	if gun == 0:
+		QUITGAME = True
+	else:
+		GUNS_ACTIVE[POSITIONS[gun]] = False
+		all_guns[gun].kill()
+		all_barrels[gun].kill()
+
 intro_loop()
 game_loop()
 game_over()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

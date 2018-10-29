@@ -16,7 +16,7 @@ class Meteor1(pygame.sprite.Sprite):
 		self.rect = self.image.get_rect()
 		self.rect.x = random.randrange(0, 1200)
 		self.rect.y = random.randrange(-1500, 0)
-		self.speed = 3
+		self.speed = 2
 		self.health = 2
 	def update(self):
 		self.rect.y = self.rect.y + self.speed
