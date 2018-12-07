@@ -10,26 +10,27 @@ from skyline import *
 from guns import *
 
 pygame.init()
-pygame.mixer.init()
 
 # Game Settings
 pygame.display.set_caption("Skyline Defence")
 clock = pygame.time.Clock()
 timerFont = pygame.font.Font(None, 36)
 scoreFont = pygame.font.SysFont(None, 40)
+pauseFont = pygame.font.SysFont(None, 24)
 pygame.mouse.set_visible(False)
 cursor_img = pygame.transform.scale(pygame.image.load("img/cursor.png") , [12 , 20])
 cursor_img_rect = cursor_img.get_rect()
 
 # Background Music 
 pygame.mixer.music.load("music/musicbg.mp3")
-pygame.mixer.music.play(-1, 0.0)
+pygame.mixer.music.play(-1, 0.0) 
 
 def game_loop():
-	global QUITGAME, SCORE, FIRED, DELAY, READY, shot, FUSION
+	global QUITGAME, PAUSED, SCORE, FIRED, DELAY, READY, shot, FUSION
 	global no_Meteor1, no_Meteor2, no_Meteor3, no_Meteor4
 	global GUN1, GUN2, GUN4, GUN5, GUN6, UPGRADE_GUN_MIN, ADD_GUN_MIN
 	global BUILDINGS
+	t0 = time.time()
 	while not QUITGAME:
 		# Background Refresh
 		screen.blit(background_img, [0,0])
@@ -38,8 +39,9 @@ def game_loop():
 		cursor_img_rect.center = pygame.mouse.get_pos()
 		
 		# Clock & Timer
-		seconds = (int(pygame.time.get_ticks()/1000))%60
-		minutes = int(pygame.time.get_ticks()/60000)
+		t1 = time.time()
+		seconds = int(t1-t0)
+		minutes = int(seconds/60)
 		timer = "{:02d}:{:02d}".format(minutes, seconds)
 		timerText = timerFont.render("Time: " + str(timer), True, (255,255,255))
 		screen.blit(timerText, (10,10))
@@ -53,18 +55,22 @@ def game_loop():
 		fusionQ = "{:01d}".format(FUSION)
 		fusionText = scoreFont.render(str(fusionQ), True, (255,255,255))
 		screen.blit(fusionText, (1160,30))
-				
+
+		# Pause Display
+		pauseText = pauseFont.render("PAUSE (ESC)", True, GOLD)
+		screen.blit(pauseText, (1120, 80))
+
 		# Meteor timing
 		ticks = int(pygame.time.get_ticks()/1000)
 		meteor1_group.update()
 		meteor1_group.draw(screen)
-		if ticks >= 12:
+		if ticks >= 100:
 			meteor2_group.update()
 			meteor2_group.draw(screen)
-		if ticks >= 18:
+		if ticks >= 200:
 			meteor3_group.update()
 			meteor3_group.draw(screen)
-		if ticks >= 24:
+		if ticks >= 300:
 			meteor4_group.update()
 			meteor4_group.draw(screen)
 		
@@ -78,17 +84,11 @@ def game_loop():
 		upgraded_user_bullets.update()
 
 		# Computer Bullets
-		if READY and not FIRED:
-			fire_bullets()
-			FIRED = True
-			READY = False
-		elif not READY:
-			FIRED = False
-
 		DELAY = DELAY + 1
 		if DELAY >= 30:
-			READY = True
+			fire_bullets()
 			DELAY = 0
+
 		computer_bullets.draw(screen)
 		computer_bullets.update()
 		upgraded_computer_bullets.draw(screen)
@@ -158,7 +158,8 @@ def game_loop():
 					updated_score = SCORE + (2*USER_HIT_SCORE)
 					updated_fusion = FUSION + (1*USER_HIT_FUSION)
 					meteor_hit.kill()
-					add_meteor(Meteor1, meteor1_group)
+					if len(meteor1_group) < no_Meteor1:
+						add_meteor(Meteor1, meteor1_group)
 				elif meteor2_group.has(meteor_hit):
 					updated_score = SCORE + (4*USER_HIT_SCORE)
 					updated_fusion = FUSION + (2*USER_HIT_FUSION)
@@ -186,7 +187,8 @@ def game_loop():
 					updated_score = SCORE + (4*USER_HIT_SCORE)
 					updated_fusion = FUSION + (2*USER_HIT_FUSION)
 					meteor_hit.kill()
-					add_meteor(Meteor1, meteor1_group)
+					if len(meteor1_group) < no_Meteor1:
+						add_meteor(Meteor1, meteor1_group)
 				elif meteor2_group.has(meteor_hit):
 					updated_score = SCORE + (8*USER_HIT_SCORE)
 					updated_fusion = FUSION + (4*USER_HIT_FUSION)
@@ -214,7 +216,8 @@ def game_loop():
 					updated_score = SCORE + (2*COMPUTER_HIT_SCORE)
 					updated_fusion = FUSION + (1*COMPUTER_HIT_FUSION)
 					meteor_hit.kill()
-					add_meteor(Meteor1, meteor1_group)
+					if len(meteor1_group) < no_Meteor1:
+						add_meteor(Meteor1, meteor1_group)
 				elif meteor2_group.has(meteor_hit):
 					updated_score = SCORE + (4*COMPUTER_HIT_SCORE)
 					updated_fusion = FUSION + (2*COMPUTER_HIT_FUSION)
@@ -242,7 +245,8 @@ def game_loop():
 					updated_score = SCORE + (4*COMPUTER_HIT_SCORE)
 					updated_fusion = FUSION + (2*COMPUTER_HIT_FUSION)
 					meteor_hit.kill()
-					add_meteor(Meteor1, meteor1_group)
+					if len(meteor1_group) < no_Meteor1:
+						add_meteor(Meteor1, meteor1_group)
 				elif meteor2_group.has(meteor_hit):
 					updated_score = SCORE + (8*COMPUTER_HIT_SCORE)
 					updated_fusion = FUSION + (4*COMPUTER_HIT_FUSION)
@@ -273,27 +277,33 @@ def game_loop():
 			if event.type == pygame.KEYDOWN:
 				# User Fire Bullets
 				if event.key == pygame.K_SPACE:
-					if len(user_bullets) <= 5:
-						if GUNS_UPGRADED[0]:
+					if GUNS_UPGRADED[0]:
+						if len(upgraded_user_bullets) <= UPGRADED_USER_GUN_LIMIT:
 							add_bullet(User_Bullet, USERANGLE, upgraded_user_bullets, True)	
-						else:
+					else:
+						if len(user_bullets) <= USER_GUN_LIMIT:
 							add_bullet(User_Bullet, USERANGLE, user_bullets, False)
 				# Upgrade Guns
 				if FUSION >= UPGRADE_GUN_MIN:
 					if event.key == pygame.K_u:
 						if NEXT_UPGRADE < len(list(gun_group.sprites())):
 							upgrade_gun()
-						FUSION = FUSION - UPGRADE_GUN_MIN
+							FUSION = FUSION - UPGRADE_GUN_MIN
 				# Add Guns
 				if FUSION >= ADD_GUN_MIN:
 					if event.key == pygame.K_p:
-						if len(list(buildings_with_guns.sprites())) > 0:
+						if len(list(buildings_with_guns.sprites())) > 0 :
 							add_gun()
-						FUSION = FUSION - ADD_GUN_MIN
+							FUSION = FUSION - ADD_GUN_MIN
+							print(FUSION)
+				if event.key == pygame.K_ESCAPE:
+					PAUSED = True
+					t0 = t1
+					pause()
 			# Quit Game
 			if event.type == pygame.QUIT:
 				QUITGAME = True
-		
+
 		pygame.display.flip()
 def how_to_play():
 	how_to_play = True
@@ -317,6 +327,21 @@ def game_over():
 		screen.blit(game_over_img, [0,0])
 		score_total = scoreFont.render(str((FUSION * 10) + SCORE), True, (255,255,255))
 		screen.blit(score_total, (670, 565))
+		pygame.display.flip()
+def pause():
+	global QUITGAME, PAUSED
+	while PAUSED:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				PAUSED = False
+				QUITGAME = True
+			elif event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_SPACE:
+					PAUSED = False
+		pauseText = scoreFont.render("GAME PAUSED", True, GOLD)
+		pauseExtendedText = timerFont.render("Press the space bar to resume", True, GOLD)
+		screen.blit(pauseText, (size[0]/2 - 130, size[1]/2))
+		screen.blit(pauseExtendedText, (size[0]/2 - 200, size[1]/2 + 50))
 		pygame.display.flip()
 def intro_loop():
 	intro =  True
@@ -402,6 +427,8 @@ def destroy_defense(gun_hit):
 		GUNS_ACTIVE[POSITIONS[gun]] = False
 		all_guns[gun].kill()
 		all_barrels[gun].kill()
+
+
 
 intro_loop()
 game_loop()

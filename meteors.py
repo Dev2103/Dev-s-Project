@@ -19,19 +19,17 @@ class Meteor1(pygame.sprite.Sprite):
 		self.speed = 2
 		self.health = 2
 	def update(self):
+		global QUITGAME
 		self.rect.y = self.rect.y + self.speed
 		self.rect.x = self.rect.x + random.randrange(-1,2)
 		if self.rect.y >= 960:
-			self.rect.x = random.randrange(0, 1280)
-			self.rect.y = random.randrange(-2000, 0)
+			game_over()
 	def hit(self):
 		self.health = self.health - normal_hit
 		return self.health
 	def upgraded_hit(self):
 		self.health = self.health - upgraded_hit
 		return self.health
-	def check_y(self):
-		return self.rect.y
 
 class Meteor2(pygame.sprite.Sprite):
 	# Constructor
@@ -114,10 +112,7 @@ def add_meteor(Type, type_group):
 	all_meteors_group.add(meteor_sprite)
 
 # Meteor Sprite Creation
-no_Meteor1 = 10
-no_Meteor2 = 3
-no_Meteor3 = 3
-no_Meteor4 = 3
+
 all_meteors_group = pygame.sprite.Group()
 meteor1_group = pygame.sprite.Group()
 meteor2_group = pygame.sprite.Group()

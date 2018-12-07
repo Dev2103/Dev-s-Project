@@ -118,7 +118,6 @@ class User_Bullet(pygame.sprite.Sprite):
 	def update(self):
 		self.rect.y = self.rect.y - 15
 		self.rect.x = self.rect.x + (15 * math.tan(math.radians(self.angle)))
-		
 		if self.rect.y <= 0:	
 			self.kill()
 	def direction(self, angle):
@@ -246,3 +245,10 @@ upgraded_computer_bullets = pygame.sprite.Group()
 
 # All Bullets
 all_bullets = pygame.sprite.Group()
+
+
+
+
+
+
+
